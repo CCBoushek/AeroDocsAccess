@@ -78,6 +78,7 @@
         tbCust.Select()
         cbOpen.Checked = True
         lbCustSelect.AutoSize = True 'There is no AutoSize option to check in Properties in the designer for some reason so you have to set it here.
+        'test git
     End Sub
     Private Sub ReloadTimer_Tick(sender As Object, e As EventArgs) Handles PictureBox1.DoubleClick
         'LoadQuotes()

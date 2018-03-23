@@ -123,7 +123,7 @@
             End Try
         ElseIf Control.ModifierKeys = Keys.Alt Then 'this only runs if you hold ALT + Click (Creates Quote Sent folder and opens it)
             Dim sModDate As Date
-            Dim SQL As String = "SELECT ModDAte FROM QutoeDetails WHERE QTnum = " & QtNum
+            Dim SQL As String = "SELECT ModDAte FROM QuoteDetails WHERE QTnum = '" & QtNum & "'"
             Dim DBconn As New DBConnection
             DBconn.RunQuery(SQL)
             If DBconn.RecordCount = 1 Then sModDate = DBconn.DBds.Tables(0).Rows(0).Item("ModDate")
