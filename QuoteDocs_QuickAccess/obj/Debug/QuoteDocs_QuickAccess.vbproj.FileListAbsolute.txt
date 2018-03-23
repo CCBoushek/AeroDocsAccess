@@ -1,0 +1,17 @@
+C:\Users\Charlie\AppData\Local\Temporary Projects\QuoteDocs_QuickAccess\bin\Debug\QuoteDocs_QuickAccess.exe.config
+J:\Programming Stuff\Visual Studio\Projects\QuoteDocs_QuickAccess\QuoteDocs_QuickAccess\QuoteDocs_QuickAccess\bin\Debug\QuoteDocs_QuickAccess.exe.config
+J:\Programming Stuff\Visual Studio\Projects\QuoteDocs_QuickAccess\QuoteDocs_QuickAccess\QuoteDocs_QuickAccess\bin\Debug\QuoteDocs_QuickAccess.exe
+J:\Programming Stuff\Visual Studio\Projects\QuoteDocs_QuickAccess\QuoteDocs_QuickAccess\QuoteDocs_QuickAccess\bin\Debug\QuoteDocs_QuickAccess.pdb
+J:\Programming Stuff\Visual Studio\Projects\QuoteDocs_QuickAccess\QuoteDocs_QuickAccess\QuoteDocs_QuickAccess\bin\Debug\QuoteDocs_QuickAccess.xml
+J:\Programming Stuff\Visual Studio\Projects\QuoteDocs_QuickAccess\QuoteDocs_QuickAccess\QuoteDocs_QuickAccess\obj\Debug\QuoteDocs_QuickAccess.vbprojResolveAssemblyReference.cache
+J:\Programming Stuff\Visual Studio\Projects\QuoteDocs_QuickAccess\QuoteDocs_QuickAccess\QuoteDocs_QuickAccess\obj\Debug\QuoteDocs_QuickAccess.Form1.resources
+J:\Programming Stuff\Visual Studio\Projects\QuoteDocs_QuickAccess\QuoteDocs_QuickAccess\QuoteDocs_QuickAccess\obj\Debug\QuoteDocs_QuickAccess.Resources.resources
+J:\Programming Stuff\Visual Studio\Projects\QuoteDocs_QuickAccess\QuoteDocs_QuickAccess\QuoteDocs_QuickAccess\obj\Debug\QuoteDocs_QuickAccess.vbproj.GenerateResource.Cache
+J:\Programming Stuff\Visual Studio\Projects\QuoteDocs_QuickAccess\QuoteDocs_QuickAccess\QuoteDocs_QuickAccess\obj\Debug\QuoteDocs_QuickAccess.exe
+J:\Programming Stuff\Visual Studio\Projects\QuoteDocs_QuickAccess\QuoteDocs_QuickAccess\QuoteDocs_QuickAccess\obj\Debug\QuoteDocs_QuickAccess.xml
+J:\Programming Stuff\Visual Studio\Projects\QuoteDocs_QuickAccess\QuoteDocs_QuickAccess\QuoteDocs_QuickAccess\obj\Debug\QuoteDocs_QuickAccess.pdb
+J:\Programming Stuff\Visual Studio\Projects\QuoteDocs_QuickAccess\QuoteDocs_QuickAccess\QuoteDocs_QuickAccess\obj\Debug\QuoteDocs_QuickAccess.ucQuoteDetail.resources
+J:\Programming Stuff\Visual Studio\Projects\QuoteDocs_QuickAccess\QuoteDocs_QuickAccess\QuoteDocs_QuickAccess\bin\Debug\QuoteDocs_QuickAccess.exe.manifest
+J:\Programming Stuff\Visual Studio\Projects\QuoteDocs_QuickAccess\QuoteDocs_QuickAccess\QuoteDocs_QuickAccess\bin\Debug\QuoteDocs_QuickAccess.application
+J:\Programming Stuff\Visual Studio\Projects\QuoteDocs_QuickAccess\QuoteDocs_QuickAccess\QuoteDocs_QuickAccess\obj\Debug\QuoteDocs_QuickAccess.exe.manifest
+J:\Programming Stuff\Visual Studio\Projects\QuoteDocs_QuickAccess\QuoteDocs_QuickAccess\QuoteDocs_QuickAccess\obj\Debug\QuoteDocs_QuickAccess.application
