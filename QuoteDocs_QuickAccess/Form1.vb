@@ -66,6 +66,11 @@
         ReloadTimer.Interval = 300000 '5 min
         ReloadTimer.Start()
         AddHandler ReloadTimer.Tick, AddressOf ReloadTimer_Tick
+
+        'The form would resize the first time the Database Connection was opened so i just put this here so it resizes right away and the user doens't have to see it large and then go small.
+        Dim initializerDBcon As New DBConnection
+        initializerDBcon.RunQuery("SELECT MAX(ID) FROM QuoteDetails")
+
         Me.TransparencyKey = Me.BackColor
         'These are so the transparency on the controls works properly i think
         lbCust.Parent = PictureBox1
