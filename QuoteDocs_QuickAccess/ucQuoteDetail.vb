@@ -123,15 +123,24 @@
             End Try
         ElseIf Control.ModifierKeys = Keys.Alt Then 'this only runs if you hold ALT + Click (Creates Quote Sent folder and opens it)
             Dim sModDate As Date
-            Dim SQL As String = "SELECT ModDAte FROM QuoteDetails WHERE QTnum = '" & QtNum & "'"
-            Dim DBconn As New DBConnection
-            DBconn.RunQuery(SQL)
-            If DBconn.RecordCount = 1 Then sModDate = DBconn.DBds.Tables(0).Rows(0).Item("ModDate")
-            strPath += "QUOTE DOCs\" & QtNum & "\!! Quotes Sent\" & InputBox("Enter date the Quote was Sent:", "Sent Date",
-            sModDate.ToString("MM-dd-yyyy"))
-            IO.Directory.CreateDirectory(strPath)
-            Process.Start(strPath)
-            End If
+            Dim SQL As String = "SELECT ModDAte, EntDate FROM QuoteDetails WHERE QTnum = '" & QtNum & "'"
+            Try
+                Dim DBconn As New DBConnection
+                DBconn.RunQuery(SQL)
+                If DBconn.RecordCount = 1 And Not IsDBNull(DBconn.DBds.Tables(0).Rows(0).Item("ModDate")) Then
+                    sModDate = DBconn.DBds.Tables(0).Rows(0).Item("ModDate")
+                Else
+                    sModDate = DBconn.DBds.Tables(0).Rows(0).Item("EntDate")
+                End If
+                strPath += "QUOTE DOCs\" & QtNum & "\!! Quotes Sent\" & InputBox("Enter date the Quote was Sent:", "Sent Date",
+                sModDate.ToString("MM-dd-yyyy"))
+                IO.Directory.CreateDirectory(strPath)
+                Process.Start(strPath)
+            Catch ex As Exception
+
+            End Try
+
+        End If
 
     End Sub
 End Class

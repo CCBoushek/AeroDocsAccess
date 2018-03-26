@@ -41,7 +41,7 @@ Partial Class ucQuoteDetail
         Me.lbCustName.Font = New System.Drawing.Font("Microsoft Sans Serif", 13.8!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lbCustName.Location = New System.Drawing.Point(198, 0)
         Me.lbCustName.Name = "lbCustName"
-        Me.lbCustName.Size = New System.Drawing.Size(406, 27)
+        Me.lbCustName.Size = New System.Drawing.Size(377, 27)
         Me.lbCustName.TabIndex = 0
         Me.lbCustName.Text = "Customer Name"
         '
@@ -50,7 +50,7 @@ Partial Class ucQuoteDetail
         Me.lbDesc.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.2!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lbDesc.Location = New System.Drawing.Point(31, 28)
         Me.lbDesc.Name = "lbDesc"
-        Me.lbDesc.Size = New System.Drawing.Size(573, 25)
+        Me.lbDesc.Size = New System.Drawing.Size(544, 25)
         Me.lbDesc.TabIndex = 0
         Me.lbDesc.Text = "Quote Description"
         '
