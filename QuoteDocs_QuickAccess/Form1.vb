@@ -15,6 +15,7 @@
     Private bCheckBoxJobTemp As Boolean
     Private bCheckBoxDeadTemp As Boolean
     Private bCheckBoxActiveTemp As Boolean
+    Private bOverrideLBPopulate As Boolean = False
     Private bFilterSelected As Boolean = False
     Private bCheckBoxesCleared As Boolean = False
     Dim X, Y As Integer
@@ -125,6 +126,12 @@
     Private Sub tbCust_TextChanged(sender As Object, e As EventArgs) Handles tbCust.TextChanged
         'This populated the Customer Selection list box with customers whose names start with the
         'string of letters in the customer name text box.
+
+        'This prevents errors with SQL when customer name has single quotes (Bongards' Creamery)
+        If bOverrideLBPopulate Then
+            Exit Sub
+        End If
+
         If tbCust.TextLength > 0 Then
             lbCustSelect.Visible = True
             Dim SQL As String
@@ -166,11 +173,13 @@
                 Case Keys.Return
                     Dim sCustName As String = lbCustSelect.GetItemText(lbCustSelect.SelectedItem) 'This is the only way I could find to get the 'display memeber' of the listbox into a string (used a variable to save typing)
                     e.SuppressKeyPress = True 'Stops the ding when you press enter.
+                    bOverrideLBPopulate = True 'this prevents errors when customer name includes special characters like single quotes (Bongards' Creamery)
                     tbCust.Text = sCustName
                     tbCust.SelectAll()
                     lbCustSelect.Visible = False
                     flpQuotes.Controls.Clear()
                     LoadQuotes(lbCustSelect.SelectedValue, sCustName)
+                    bOverrideLBPopulate = False
                 Case Keys.Down
                     If Not lbCustSelect.SelectedIndex = lbCustSelect.Items.Count - 1 Then lbCustSelect.SelectedIndex = lbCustSelect.SelectedIndex + 1
                     e.Handled = True
