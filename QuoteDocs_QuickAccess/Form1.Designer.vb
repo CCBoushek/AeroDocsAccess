@@ -24,7 +24,7 @@ Partial Class Form1
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Form1))
         Me.btClose = New System.Windows.Forms.Button()
-        Me.lbCust = New System.Windows.Forms.Label()
+        Me.lblCust = New System.Windows.Forms.Label()
         Me.tbCust = New System.Windows.Forms.TextBox()
         Me.flpQuotes = New System.Windows.Forms.FlowLayoutPanel()
         Me.lblInstructions = New System.Windows.Forms.Label()
@@ -48,16 +48,16 @@ Partial Class Form1
         Me.btClose.Text = "X"
         Me.btClose.UseVisualStyleBackColor = True
         '
-        'lbCust
+        'lblCust
         '
-        Me.lbCust.AutoSize = True
-        Me.lbCust.BackColor = System.Drawing.Color.Transparent
-        Me.lbCust.Font = New System.Drawing.Font("Microsoft Sans Serif", 13.8!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lbCust.Location = New System.Drawing.Point(30, 61)
-        Me.lbCust.Name = "lbCust"
-        Me.lbCust.Size = New System.Drawing.Size(123, 29)
-        Me.lbCust.TabIndex = 1
-        Me.lbCust.Text = "Customer:"
+        Me.lblCust.AutoSize = True
+        Me.lblCust.BackColor = System.Drawing.Color.Transparent
+        Me.lblCust.Font = New System.Drawing.Font("Microsoft Sans Serif", 13.8!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblCust.Location = New System.Drawing.Point(30, 61)
+        Me.lblCust.Name = "lblCust"
+        Me.lblCust.Size = New System.Drawing.Size(123, 29)
+        Me.lblCust.TabIndex = 1
+        Me.lblCust.Text = "Customer:"
         '
         'tbCust
         '
@@ -190,7 +190,7 @@ Partial Class Form1
         Me.Controls.Add(Me.lblInstructions)
         Me.Controls.Add(Me.flpQuotes)
         Me.Controls.Add(Me.tbCust)
-        Me.Controls.Add(Me.lbCust)
+        Me.Controls.Add(Me.lblCust)
         Me.Controls.Add(Me.PictureBox1)
         Me.Controls.Add(Me.btClose)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
@@ -206,7 +206,7 @@ Partial Class Form1
     End Sub
 
     Friend WithEvents btClose As Button
-    Friend WithEvents lbCust As Label
+    Friend WithEvents lblCust As Label
     Friend WithEvents PictureBox1 As PictureBox
     Friend WithEvents tbCust As TextBox
     Friend WithEvents flpQuotes As FlowLayoutPanel

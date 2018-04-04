@@ -11,6 +11,12 @@
     Private bShowJob As Boolean = False
     Private bShowDead As Boolean = False
     Private bShowActive As Boolean = False
+    Private bCheckBoxOPenTemp As Boolean
+    Private bCheckBoxJobTemp As Boolean
+    Private bCheckBoxDeadTemp As Boolean
+    Private bCheckBoxActiveTemp As Boolean
+    Private bFilterSelected As Boolean = False
+    Private bCheckBoxesCleared As Boolean = False
     Dim X, Y As Integer
     Dim NewPoint As New System.Drawing.Point
     'This should/could be updated to show Jobs and be able to open the electronic job file/Folder When we start doing that.
@@ -73,13 +79,14 @@
 
         Me.TransparencyKey = Me.BackColor
         'These are so the transparency on the controls works properly i think
-        lbCust.Parent = PictureBox1
+        lblCust.Parent = PictureBox1
         lblUpdated.Parent = PictureBox1
         lblInstructions.Parent = PictureBox1
         cbOpen.Parent = PictureBox1
         cbJob.Parent = PictureBox1
         cbDead.Parent = PictureBox1
         'FlowLayoutPanel1.Parent = PictureBox1
+        KeyPreview = True
         tbCust.Select()
         cbOpen.Checked = True
         lbCustSelect.AutoSize = True 'There is no AutoSize option to check in Properties in the designer for some reason so you have to set it here.
@@ -101,12 +108,12 @@
     Private Sub btClose_Click() Handles btClose.Click
         Me.WindowState = FormWindowState.Minimized
     End Sub
-    Private Sub Form1_MouseDown(sender As Object, e As MouseEventArgs) Handles PictureBox1.MouseDown, lblInstructions.MouseDown, lbCust.MouseDown
+    Private Sub Form1_MouseDown(sender As Object, e As MouseEventArgs) Handles PictureBox1.MouseDown, lblInstructions.MouseDown, lblCust.MouseDown
         X = Control.MousePosition.X - Me.Location.X
         Y = Control.MousePosition.Y - Me.Location.Y
     End Sub
 
-    Private Sub Form1_MouseMove(sender As Object, e As MouseEventArgs) Handles PictureBox1.MouseMove, lblInstructions.MouseMove, lbCust.MouseMove
+    Private Sub Form1_MouseMove(sender As Object, e As MouseEventArgs) Handles PictureBox1.MouseMove, lblInstructions.MouseMove, lblCust.MouseMove
         If e.Button = MouseButtons.Left Then
             NewPoint = Control.MousePosition
             NewPoint.X -= (X)
@@ -142,12 +149,16 @@
             e.SuppressKeyPress = True
             Select Case e.KeyCode
                 Case Keys.J
+                    If Not bCheckBoxesCleared Then Clear_Check_Boxes()
                     cbJob.Checked = Not cbJob.Checked 'Hide_Show_Quotes event is handled/fired by the radio_button_Changed event
                 Case Keys.D
+                    If Not bCheckBoxesCleared Then Clear_Check_Boxes()
                     cbDead.Checked = Not cbDead.Checked
                 Case Keys.O
+                    If Not bCheckBoxesCleared Then Clear_Check_Boxes()
                     cbOpen.Checked = Not cbOpen.Checked
                 Case Keys.A
+                    'If Not bCheckBoxesCleared Then Clear_Check_Boxes()
                     'cbActive.Checked = Not cbActive.Checked
             End Select
         Else
@@ -174,7 +185,15 @@
             If ShowQt(q) Then q.Show() Else q.Hide()
         Next
     End Sub
-
+    Private Sub Clear_Check_Boxes()
+        'Clear all check boxes
+        cbDead.Checked = False
+        cbJob.Checked = False
+        cbOpen.Checked = False
+        'cbActive.checked = False
+        bCheckBoxesCleared = True
+        Debug.Print("CheckBoxes Cleared = " & bCheckBoxesCleared)
+    End Sub
     Private Sub Radio_Button_Changed(sender As Object, e As EventArgs) Handles cbOpen.CheckedChanged, cbJob.CheckedChanged, cbDead.CheckedChanged
         bShowJob = cbJob.Checked 'rbJob.Checked returns true if checked and false if not checked.
         bShowDead = cbDead.Checked
@@ -213,4 +232,16 @@
                 Return False
         End Select
     End Function
+
+    Private Sub tbCust_Click(sender As Object, e As EventArgs) Handles tbCust.Click
+        tbCust.SelectAll()
+    End Sub
+
+    Private Sub Form1_KeyUp(sender As Object, e As KeyEventArgs) Handles Me.KeyUp
+        Debug.Print(e.KeyCode.ToString)
+        If e.KeyCode.ToString = "ControlKey" Then 'I can't figure out how to detect the CTRL KeyUp event any other way than this which seems really dumb.
+            bCheckBoxesCleared = False
+            Debug.Print("Check Boxes Cleared = " & bCheckBoxesCleared)
+        End If
+    End Sub
 End Class

@@ -39,18 +39,18 @@ Partial Class ucQuoteDetail
         'lbCustName
         '
         Me.lbCustName.Font = New System.Drawing.Font("Microsoft Sans Serif", 13.8!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lbCustName.Location = New System.Drawing.Point(198, 0)
+        Me.lbCustName.Location = New System.Drawing.Point(196, 0)
         Me.lbCustName.Name = "lbCustName"
-        Me.lbCustName.Size = New System.Drawing.Size(377, 27)
+        Me.lbCustName.Size = New System.Drawing.Size(375, 27)
         Me.lbCustName.TabIndex = 0
         Me.lbCustName.Text = "Customer Name"
         '
         'lbDesc
         '
         Me.lbDesc.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.2!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lbDesc.Location = New System.Drawing.Point(31, 28)
+        Me.lbDesc.Location = New System.Drawing.Point(29, 28)
         Me.lbDesc.Name = "lbDesc"
-        Me.lbDesc.Size = New System.Drawing.Size(544, 25)
+        Me.lbDesc.Size = New System.Drawing.Size(542, 25)
         Me.lbDesc.TabIndex = 0
         Me.lbDesc.Text = "Quote Description"
         '
@@ -65,7 +65,7 @@ Partial Class ucQuoteDetail
         Me.ForeColor = System.Drawing.SystemColors.ControlLight
         Me.Margin = New System.Windows.Forms.Padding(0, 2, 2, 0)
         Me.Name = "ucQuoteDetail"
-        Me.Size = New System.Drawing.Size(578, 55)
+        Me.Size = New System.Drawing.Size(576, 55)
         Me.ResumeLayout(False)
 
     End Sub
