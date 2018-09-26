@@ -29,7 +29,6 @@ Partial Class Form1
         Me.flpQuotes = New System.Windows.Forms.FlowLayoutPanel()
         Me.lblInstructions = New System.Windows.Forms.Label()
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
-        Me.lblUpdated = New System.Windows.Forms.Label()
         Me.lbCustSelect = New System.Windows.Forms.ListBox()
         Me.cbOpen = New System.Windows.Forms.CheckBox()
         Me.cbJob = New System.Windows.Forms.CheckBox()
@@ -110,17 +109,6 @@ Partial Class Form1
         Me.PictureBox1.TabIndex = 11
         Me.PictureBox1.TabStop = False
         '
-        'lblUpdated
-        '
-        Me.lblUpdated.AutoSize = True
-        Me.lblUpdated.BackColor = System.Drawing.Color.Transparent
-        Me.lblUpdated.ForeColor = System.Drawing.Color.Black
-        Me.lblUpdated.Location = New System.Drawing.Point(557, 17)
-        Me.lblUpdated.Name = "lblUpdated"
-        Me.lblUpdated.Size = New System.Drawing.Size(66, 17)
-        Me.lblUpdated.TabIndex = 15
-        Me.lblUpdated.Text = "Updated:"
-        '
         'lbCustSelect
         '
         Me.lbCustSelect.BackColor = System.Drawing.Color.Silver
@@ -186,7 +174,6 @@ Partial Class Form1
         Me.Controls.Add(Me.cbJob)
         Me.Controls.Add(Me.cbOpen)
         Me.Controls.Add(Me.lbCustSelect)
-        Me.Controls.Add(Me.lblUpdated)
         Me.Controls.Add(Me.lblInstructions)
         Me.Controls.Add(Me.flpQuotes)
         Me.Controls.Add(Me.tbCust)
@@ -211,7 +198,6 @@ Partial Class Form1
     Friend WithEvents tbCust As TextBox
     Friend WithEvents flpQuotes As FlowLayoutPanel
     Friend WithEvents lblInstructions As Label
-    Friend WithEvents lblUpdated As Label
     Friend WithEvents lbCustSelect As ListBox
     Friend WithEvents cbOpen As CheckBox
     Friend WithEvents cbJob As CheckBox

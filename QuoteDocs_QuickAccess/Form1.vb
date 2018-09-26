@@ -20,7 +20,8 @@
     Private bCheckBoxesCleared As Boolean = False
     Dim X, Y As Integer
     Dim NewPoint As New System.Drawing.Point
-    'This should/could be updated to show Jobs and be able to open the electronic job file/Folder When we start doing that. <-- Started 9/26/18
+    'This should/could be updated to show Jobs and be able to open the electronic job file/Folder When we start doing that. <-- Started 9/26/18... finished rev 1 on 9/26/18 which allows you to open jobs that are associated with a quote.
+    'Started rev 2 of the job folders so Jobs are searched independantly and allowed to open without an associated quote 9/26/18
     'Also, Should be able to filter/choose to show or not Dead Quotes and Job Quotes <-- done a while ago
 
     Private Sub LoadQuotes(iCustID As Integer, sCustName As String)
@@ -68,10 +69,6 @@
         Next
     End Sub
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles Me.Load
-        lblUpdated.Text = DateTime.Now.ToString("hh: mm:ss tt")
-        ReloadTimer.Interval = 300000 '5 min
-        ReloadTimer.Start()
-        AddHandler ReloadTimer.Tick, AddressOf ReloadTimer_Tick
 
         'The form would resize the first time the Database Connection was opened so i just put this here so it resizes right away and the user doens't have to see it large and then go small.
         Dim initializerDBcon As New DBConnection
@@ -90,12 +87,6 @@
         tbCust.Select()
         cbOpen.Checked = True
         lbCustSelect.AutoSize = True 'There is no AutoSize option to check in Properties in the designer for some reason so you have to set it here.
-        'test git
-    End Sub
-    Private Sub ReloadTimer_Tick(sender As Object, e As EventArgs) Handles PictureBox1.DoubleClick
-        'LoadQuotes()
-        lblUpdated.Text = DateTime.Now.ToString("hh:mm:ss tt")
-        tbCust.Select()
     End Sub
     Private Function ValidResponse(DBValue As Object) As String
         If Not IsDBNull(DBValue) Then
