@@ -93,7 +93,7 @@
         bVisible = True
     End Sub
 
-    Private Sub Open_Doc_Folder(sender As Object, e As EventArgs) Handles Me.DoubleClick, lbCustName.DoubleClick, lbDesc.DoubleClick, lbQtNum.DoubleClick
+    Private Sub Open_Quote_Folder(sender As Object, e As EventArgs) Handles Me.DoubleClick, lbCustName.DoubleClick, lbDesc.DoubleClick, lbQtNum.DoubleClick, OpenQtFldr_ContextMenuItem.Click
         Dim strPath As String = "Z:\CLOUD STORAGE\QUOTES\"
         Select Case qType
             Case qtType.Part
@@ -143,4 +143,20 @@
         End If
 
     End Sub
+    Private Sub Open_Job_Folder(sender As Object, e As EventArgs) Handles OpenJobFldr_ContextMenuItem.Click
+        Dim strPath As String = "Z:\CLOUD STORAGE\JOB FILES\JOBS\"
+        'find job(s) related to that quote
+        Dim AeroDBConn As New AeroDBConnection
+        Dim SQL As String = "SELECT j_job FROM QUOTE WHERE q_quote = '" & QtNumValue & "'"
+        AeroDBConn.RunQuery(SQL)
+        If IsDBNull(AeroDBConn.DBds.Tables(0).Rows(0).Item("j_job")) Then
+            MsgBox("No Job associated with this quote.")
+        Else 'Open the job folder associated with this quote.
+            'NOTE This does not account for multiple jobs referencing the same quote.
+            JobNumValue = AeroDBConn.DBds.Tables(0).Rows(0).Item("j_job")
+            strPath += JobNumValue.ToString
+            Process.Start(strPath)
+        End If
+    End Sub
+
 End Class

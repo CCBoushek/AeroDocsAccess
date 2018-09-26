@@ -20,9 +20,8 @@
     Private bCheckBoxesCleared As Boolean = False
     Dim X, Y As Integer
     Dim NewPoint As New System.Drawing.Point
-    'This should/could be updated to show Jobs and be able to open the electronic job file/Folder When we start doing that.
-
-    ' Also, Should be able to filter/choose to show or not Dead Quotes and Job Quotes
+    'This should/could be updated to show Jobs and be able to open the electronic job file/Folder When we start doing that. <-- Started 9/26/18
+    'Also, Should be able to filter/choose to show or not Dead Quotes and Job Quotes <-- done a while ago
 
     Private Sub LoadQuotes(iCustID As Integer, sCustName As String)
         Dim SQL As String = "SELECT QTnum, QTDesc, EntDate FROM QuoteDetails WHERE CustID = " & iCustID & " ORDER BY EntDate DESC"
@@ -204,10 +203,10 @@
         Debug.Print("CheckBoxes Cleared = " & bCheckBoxesCleared)
     End Sub
     Private Sub Radio_Button_Changed(sender As Object, e As EventArgs) Handles cbOpen.CheckedChanged, cbJob.CheckedChanged, cbDead.CheckedChanged
-        bShowJob = cbJob.Checked 'rbJob.Checked returns true if checked and false if not checked.
+        bShowJob = cbJob.Checked 'cbJob.Checked returns true if checked and false if not checked.
         bShowDead = cbDead.Checked
         bShowOpen = cbOpen.Checked
-        'bShowActive = rbOpen.checked
+        bShowActive = cbOpen.Checked 'Instead of having a checkbox for Active and Open, Open will show both open and active quotes.
         Hide_Show_Quotes()
     End Sub
 
