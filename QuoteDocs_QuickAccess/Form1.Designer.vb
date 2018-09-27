@@ -33,6 +33,10 @@ Partial Class Form1
         Me.cbOpen = New System.Windows.Forms.CheckBox()
         Me.cbJob = New System.Windows.Forms.CheckBox()
         Me.cbDead = New System.Windows.Forms.CheckBox()
+        Me.rbtnQuotes = New System.Windows.Forms.RadioButton()
+        Me.rbtnJobs = New System.Windows.Forms.RadioButton()
+        Me.cbClosed = New System.Windows.Forms.CheckBox()
+        Me.flpJobs = New System.Windows.Forms.FlowLayoutPanel()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -52,7 +56,7 @@ Partial Class Form1
         Me.lblCust.AutoSize = True
         Me.lblCust.BackColor = System.Drawing.Color.Transparent
         Me.lblCust.Font = New System.Drawing.Font("Microsoft Sans Serif", 13.8!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblCust.Location = New System.Drawing.Point(30, 61)
+        Me.lblCust.Location = New System.Drawing.Point(22, 61)
         Me.lblCust.Name = "lblCust"
         Me.lblCust.Size = New System.Drawing.Size(123, 29)
         Me.lblCust.TabIndex = 1
@@ -64,7 +68,7 @@ Partial Class Form1
         Me.tbCust.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.tbCust.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper
         Me.tbCust.Font = New System.Drawing.Font("Microsoft Sans Serif", 13.8!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.tbCust.Location = New System.Drawing.Point(155, 62)
+        Me.tbCust.Location = New System.Drawing.Point(147, 62)
         Me.tbCust.Margin = New System.Windows.Forms.Padding(3, 3, 3, 8)
         Me.tbCust.Name = "tbCust"
         Me.tbCust.RightToLeft = System.Windows.Forms.RightToLeft.No
@@ -78,7 +82,7 @@ Partial Class Form1
         Me.flpQuotes.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
         Me.flpQuotes.BackColor = System.Drawing.SystemColors.ControlDarkDark
         Me.flpQuotes.FlowDirection = System.Windows.Forms.FlowDirection.TopDown
-        Me.flpQuotes.Location = New System.Drawing.Point(37, 96)
+        Me.flpQuotes.Location = New System.Drawing.Point(29, 96)
         Me.flpQuotes.MaximumSize = New System.Drawing.Size(608, 300)
         Me.flpQuotes.MinimumSize = New System.Drawing.Size(608, 50)
         Me.flpQuotes.Name = "flpQuotes"
@@ -117,7 +121,7 @@ Partial Class Form1
         Me.lbCustSelect.FormattingEnabled = True
         Me.lbCustSelect.ItemHeight = 25
         Me.lbCustSelect.Items.AddRange(New Object() {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10"})
-        Me.lbCustSelect.Location = New System.Drawing.Point(154, 88)
+        Me.lbCustSelect.Location = New System.Drawing.Point(146, 88)
         Me.lbCustSelect.MaximumSize = New System.Drawing.Size(420, 100)
         Me.lbCustSelect.MinimumSize = New System.Drawing.Size(420, 25)
         Me.lbCustSelect.Name = "lbCustSelect"
@@ -162,6 +166,60 @@ Partial Class Form1
         Me.cbDead.Text = "Dead"
         Me.cbDead.UseVisualStyleBackColor = False
         '
+        'rbtnQuotes
+        '
+        Me.rbtnQuotes.AutoSize = True
+        Me.rbtnQuotes.BackColor = System.Drawing.Color.Transparent
+        Me.rbtnQuotes.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.rbtnQuotes.Location = New System.Drawing.Point(574, 28)
+        Me.rbtnQuotes.Name = "rbtnQuotes"
+        Me.rbtnQuotes.Size = New System.Drawing.Size(84, 24)
+        Me.rbtnQuotes.TabIndex = 19
+        Me.rbtnQuotes.Text = "Quotes"
+        Me.rbtnQuotes.UseVisualStyleBackColor = False
+        '
+        'rbtnJobs
+        '
+        Me.rbtnJobs.AutoSize = True
+        Me.rbtnJobs.BackColor = System.Drawing.Color.Transparent
+        Me.rbtnJobs.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.rbtnJobs.Location = New System.Drawing.Point(574, 62)
+        Me.rbtnJobs.Name = "rbtnJobs"
+        Me.rbtnJobs.Size = New System.Drawing.Size(66, 24)
+        Me.rbtnJobs.TabIndex = 20
+        Me.rbtnJobs.Text = "Jobs"
+        Me.rbtnJobs.UseVisualStyleBackColor = False
+        '
+        'cbClosed
+        '
+        Me.cbClosed.AutoSize = True
+        Me.cbClosed.BackColor = System.Drawing.Color.Transparent
+        Me.cbClosed.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.cbClosed.Location = New System.Drawing.Point(402, 29)
+        Me.cbClosed.Margin = New System.Windows.Forms.Padding(0)
+        Me.cbClosed.Name = "cbClosed"
+        Me.cbClosed.Size = New System.Drawing.Size(83, 24)
+        Me.cbClosed.TabIndex = 21
+        Me.cbClosed.Text = "Closed"
+        Me.cbClosed.UseVisualStyleBackColor = False
+        Me.cbClosed.Visible = False
+        '
+        'flpJobs
+        '
+        Me.flpJobs.AutoScroll = True
+        Me.flpJobs.AutoSize = True
+        Me.flpJobs.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
+        Me.flpJobs.BackColor = System.Drawing.SystemColors.ControlDarkDark
+        Me.flpJobs.FlowDirection = System.Windows.Forms.FlowDirection.TopDown
+        Me.flpJobs.Location = New System.Drawing.Point(29, 96)
+        Me.flpJobs.MaximumSize = New System.Drawing.Size(608, 300)
+        Me.flpJobs.MinimumSize = New System.Drawing.Size(608, 50)
+        Me.flpJobs.Name = "flpJobs"
+        Me.flpJobs.Size = New System.Drawing.Size(608, 50)
+        Me.flpJobs.TabIndex = 14
+        Me.flpJobs.Visible = False
+        Me.flpJobs.WrapContents = False
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
@@ -170,6 +228,10 @@ Partial Class Form1
         Me.BackColor = System.Drawing.Color.DarkGray
         Me.CancelButton = Me.btClose
         Me.ClientSize = New System.Drawing.Size(690, 132)
+        Me.Controls.Add(Me.flpJobs)
+        Me.Controls.Add(Me.cbClosed)
+        Me.Controls.Add(Me.rbtnJobs)
+        Me.Controls.Add(Me.rbtnQuotes)
         Me.Controls.Add(Me.cbDead)
         Me.Controls.Add(Me.cbJob)
         Me.Controls.Add(Me.cbOpen)
@@ -202,4 +264,8 @@ Partial Class Form1
     Friend WithEvents cbOpen As CheckBox
     Friend WithEvents cbJob As CheckBox
     Friend WithEvents cbDead As CheckBox
+    Friend WithEvents rbtnQuotes As RadioButton
+    Friend WithEvents rbtnJobs As RadioButton
+    Friend WithEvents cbClosed As CheckBox
+    Friend WithEvents flpJobs As FlowLayoutPanel
 End Class

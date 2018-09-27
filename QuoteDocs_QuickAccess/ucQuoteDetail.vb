@@ -22,6 +22,8 @@
                     BackColor = Color.FromArgb(64, 64, 64)
                 Case qtStat.Active
                     BackColor = Color.FromArgb(25, 150, 25)
+                Case qtStat.Closed
+                    BackColor = Color.FromArgb(64, 64, 64)
             End Select
         End Set
     End Property
@@ -31,6 +33,7 @@
         Open
         Job
         Dead
+        Closed
     End Enum
     Public Enum qtType
         Part
