@@ -28,7 +28,7 @@ Partial Class ucQuoteDetail
         Me.lbDesc = New System.Windows.Forms.Label()
         Me.RtClickMenu1 = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.OpenQtFldr_ContextMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.OpenJobFldr_ContextMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.menuJobFolder = New System.Windows.Forms.ToolStripMenuItem()
         Me.RtClickMenu1.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -62,21 +62,21 @@ Partial Class ucQuoteDetail
         'RtClickMenu1
         '
         Me.RtClickMenu1.ImageScalingSize = New System.Drawing.Size(20, 20)
-        Me.RtClickMenu1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.OpenQtFldr_ContextMenuItem, Me.OpenJobFldr_ContextMenuItem})
+        Me.RtClickMenu1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.OpenQtFldr_ContextMenuItem, Me.menuJobFolder})
         Me.RtClickMenu1.Name = "ContextMenuStrip1"
-        Me.RtClickMenu1.Size = New System.Drawing.Size(176, 80)
+        Me.RtClickMenu1.Size = New System.Drawing.Size(211, 80)
         '
         'OpenQtFldr_ContextMenuItem
         '
         Me.OpenQtFldr_ContextMenuItem.Name = "OpenQtFldr_ContextMenuItem"
-        Me.OpenQtFldr_ContextMenuItem.Size = New System.Drawing.Size(175, 24)
+        Me.OpenQtFldr_ContextMenuItem.Size = New System.Drawing.Size(210, 24)
         Me.OpenQtFldr_ContextMenuItem.Text = "Quote Folder"
         '
-        'OpenJobFldr_ContextMenuItem
+        'menuJobFolder
         '
-        Me.OpenJobFldr_ContextMenuItem.Name = "OpenJobFldr_ContextMenuItem"
-        Me.OpenJobFldr_ContextMenuItem.Size = New System.Drawing.Size(175, 24)
-        Me.OpenJobFldr_ContextMenuItem.Text = "Job Folder"
+        Me.menuJobFolder.Name = "menuJobFolder"
+        Me.menuJobFolder.Size = New System.Drawing.Size(210, 24)
+        Me.menuJobFolder.Text = "Job Folder"
         '
         'ucQuoteDetail
         '
@@ -101,5 +101,5 @@ Partial Class ucQuoteDetail
     Friend WithEvents lbDesc As Label
     Friend WithEvents RtClickMenu1 As ContextMenuStrip
     Friend WithEvents OpenQtFldr_ContextMenuItem As ToolStripMenuItem
-    Friend WithEvents OpenJobFldr_ContextMenuItem As ToolStripMenuItem
+    Friend WithEvents menuJobFolder As ToolStripMenuItem
 End Class

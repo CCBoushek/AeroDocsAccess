@@ -38,11 +38,14 @@
         dtQuoteDBF = AeroDBcon.DBds.Tables(0)
 
         'Loop through the quotes retrieved from the accdb and assign their status
-        Dim drs As DataRow()
-        Dim dr As DataRow
+        Dim drs As DataRow() 'array of data rows
+        Dim dr As DataRow 'Single data row
         Dim sSelExpression As String
         For i As Integer = 0 To dtQuotes.Rows.Count - 1
             Dim qt As New ucQuoteDetail
+
+
+
 
             With dtQuotes.Rows(i)
                 'Search the data rows array for the each quote and assign status
@@ -56,15 +59,19 @@
                             qt.qStatus = ucQuoteDetail.qtStat.Open
                         Case "J"
                             qt.qStatus = ucQuoteDetail.qtStat.Job
-                            qt.JobNum = dr("j_job")
+                            qt.JobNum = ValidResponse(dr("j_job"))
+                            Try
+                                SQL = "SELECT * FROM JOB WHERE J_JOB = " & dr("j_job")
+                                AeroDBcon.RunQuery(SQL)
+                                qt.poCount = AeroDBcon.DBds.Tables(0).Rows(0).Item("J_POCOUNT")
+                            Catch ex As Exception
+                                Debug.Print(ex.Message)
+                            End Try
                         Case "D"
                             qt.qStatus = ucQuoteDetail.qtStat.Dead
                         Case "A"
                             qt.qStatus = ucQuoteDetail.qtStat.Active
                     End Select
-                    qt.JobNum = dr("j_job")
-                    Debug.Print(qt.JobNum.ToString)
-                    Debug.Print(dr("q_quote"))
                 End If
                 qt.CustNum = iCustID
                 qt.QtNum = ValidResponse(.Item("QTnum"))
@@ -81,8 +88,16 @@
         Dim SQL As String = "SELECT * FROM JOB WHERE c_customer = " & iCustID & " ORDER BY j_job DESC"
         AeroDBcon.RunQuery(SQL)
         dtJobs = AeroDBcon.DBds.Tables(0)
+        Dim z As Integer = flpJobs.Controls.Count
+        Dim j As Integer
+        Dim inc As Integer = 20
+        If dtJobs.Rows.Count > z + inc Then
+            j = z + inc
+        Else
+            j = dtJobs.Rows.Count
+        End If
 
-        For i As Integer = 0 To dtJobs.Rows.Count - 1
+        For i As Integer = X To j
             With dtJobs.Rows(i)
                 Dim qt As New ucQuoteDetail
                 Debug.Print("Status: " & .Item("j_status"))
@@ -91,6 +106,7 @@
                 ElseIf .Item("j_status") = "C" Then
                     qt.qStatus = ucQuoteDetail.qtStat.Closed
                 End If
+                qt.poCount = .Item("J_POCOUNT")
                 qt.CustNum = iCustID
                 qt.QtNum = .Item("j_job")
                 qt.Desc = ValidResponse(.Item("j_descript"))

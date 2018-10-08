@@ -5,8 +5,31 @@
     Private CustNameValue As String
     Private bVisible As Boolean
     Public qType As qtType
+
     Private JobNumValue As Integer
     Private qStat As qtStat
+    Private _poCount As Integer
+    Public Property poCount As Integer
+        Get
+            Return _poCount
+        End Get
+        Set
+            _poCount = Value
+            For i As Integer = 1 To _poCount
+                Dim menu1 As New ToolStripMenuItem() With {.Text = "-" & i.ToString("D2"), .Name = "poItem" & i.ToString("D2")}
+                menuJobFolder.DropDownItems.Add(menu1)
+                AddHandler menu1.Click, AddressOf poFolder_click
+            Next
+        End Set
+    End Property
+    Private Sub poFolder_click(sender As ToolStripMenuItem, e As EventArgs)
+        Dim poNum As Integer = JobNum & sender.Name.Substring(6, 2)
+        Debug.Print(poNum.ToString)
+        Dim sPath As String = "Z:\CLOUD STORAGE\JOB FILES\JOBS\" & JobNum.ToString & "\2 - PURCHASE ORDERS\" & poNum.ToString
+        Debug.Print(sPath)
+        Process.Start(sPath)
+    End Sub
+
     Public Property qStatus() As qtStat
         Get
             Return qStat
@@ -146,7 +169,7 @@
         End If
 
     End Sub
-    Private Sub Open_Job_Folder(sender As Object, e As EventArgs) Handles OpenJobFldr_ContextMenuItem.Click
+    Private Sub Open_Job_Folder(sender As Object, e As EventArgs) Handles menuJobFolder.Click
         Dim strPath As String = "Z:\CLOUD STORAGE\JOB FILES\JOBS\"
         'find job(s) related to that quote
         Dim AeroDBConn As New AeroDBConnection

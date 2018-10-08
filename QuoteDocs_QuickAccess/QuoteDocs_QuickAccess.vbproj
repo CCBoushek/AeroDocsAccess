@@ -72,7 +72,7 @@
     <GenerateManifests>true</GenerateManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <SignManifests>true</SignManifests>
+    <SignManifests>false</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>Icon.ico</ApplicationIcon>
@@ -165,7 +165,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="QuoteDocs_QuickAccess_1_TemporaryKey.pfx" />
     <None Include="QuoteDocs_QuickAccess_TemporaryKey.pfx" />
     <None Include="Resources\Button Background.png" />
   </ItemGroup>
