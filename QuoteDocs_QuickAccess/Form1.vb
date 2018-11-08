@@ -50,7 +50,7 @@
             With dtQuotes.Rows(i)
                 'Search the data rows array for the each quote and assign status
                 sSelExpression = "Q_QUOTE = '" & .Item("QTnum") & "'"
-                Debug.Print(sSelExpression)
+                'Debug.Print(sSelExpression)
                 drs = dtQuoteDBF.Select(sSelExpression)
                 If drs.Count = 1 Then
                     dr = drs(0)
@@ -84,6 +84,7 @@
         flpQuotes.Visible = rbtnQuotes.Checked
         flpJobs.Visible = rbtnJobs.Checked
     End Sub
+
     Private Sub LoadJobs(iCustID As Integer, sCustName As String)
         Dim SQL As String = "SELECT * FROM JOB WHERE c_customer = " & iCustID & " ORDER BY j_job DESC"
         AeroDBcon.RunQuery(SQL)
@@ -96,20 +97,28 @@
         Else
             j = dtJobs.Rows.Count
         End If
-
+        'Need a Try-Catch here if search returns no results
         For i As Integer = X To j
             With dtJobs.Rows(i)
                 Dim qt As New ucQuoteDetail
-                Debug.Print("Status: " & .Item("j_status"))
+                'Debug.Print("Status: " & .Item("j_status"))
                 If IsDBNull(.Item("j_status")) Then
+                    'DB field is just blank if the job is open, "C" if closed
                     qt.qStatus = ucQuoteDetail.qtStat.Open
+                    'if open, show PSale
+                    qt.JobValue = .Item("J_PSALE")
                 ElseIf .Item("j_status") = "C" Then
                     qt.qStatus = ucQuoteDetail.qtStat.Closed
+                    'If job is closed, display ASALE
+                    qt.JobValue = .Item("J_ASALE")
                 End If
                 qt.poCount = .Item("J_POCOUNT")
                 qt.CustNum = iCustID
-                qt.QtNum = .Item("j_job")
-                qt.Desc = ValidResponse(.Item("j_descript"))
+                qt.JobNum = .Item("J_JOB")
+                If Not IsDBNull(.Item("Q_QUOTE")) Then
+                    qt.QtNum = .Item("Q_QUOTE")
+                End If
+                qt.Desc = ValidResponse(.Item("J_DESCRIPT"))
                 qt.CustName = sCustName
                 If ShowJob(qt) Then qt.Show() Else qt.Hide()
                 flpJobs.Controls.Add(qt)
@@ -333,6 +342,16 @@
         cbJob.Visible = Not rbtnJobs.Checked
         tbCust.Focus()
         tbCust.SelectAll()
+        flpQuotes.Controls.Clear()
+        flpJobs.Controls.Clear()
+
+        'Reload the quotes or jobs for that customer
+        Dim sCustName As String = lbCustSelect.GetItemText(lbCustSelect.SelectedItem) 'This is the only way I could find to get the 'display memeber' of the listbox into a string (used a variable to save typing)
+        If rbtnQuotes.Checked Then
+            LoadQuotes(lbCustSelect.SelectedValue, sCustName)
+        ElseIf rbtnJobs.Checked Then
+            LoadJobs(lbCustSelect.SelectedValue, sCustName)
+        End If
     End Sub
 
     Private Sub Form1_KeyUp(sender As Object, e As KeyEventArgs) Handles Me.KeyUp

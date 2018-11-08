@@ -5,16 +5,26 @@
     Private CustNameValue As String
     Private bVisible As Boolean
     Public qType As qtType
-
     Private JobNumValue As Integer
     Private qStat As qtStat
     Private _poCount As Integer
+    Private _JobValue As Double
+
+    Public Property JobValue As Double
+        Get
+            Return _JobValue
+        End Get
+        Set
+            _JobValue = Value
+        End Set
+    End Property
+
     Public Property poCount As Integer
         Get
             Return _poCount
         End Get
         Set
-            _poCount = Value
+            _poCount = Value 'Value must be the number passed to this sub? Strange that it's not in the declaration
             For i As Integer = 1 To _poCount
                 Dim menu1 As New ToolStripMenuItem() With {.Text = "-" & i.ToString("D2"), .Name = "poItem" & i.ToString("D2")}
                 menuJobFolder.DropDownItems.Add(menu1)
@@ -23,7 +33,7 @@
         End Set
     End Property
     Private Sub poFolder_click(sender As ToolStripMenuItem, e As EventArgs)
-        Dim poNum As Integer = JobNum & sender.Name.Substring(6, 2)
+        Dim poNum As Integer = JobNumValue & sender.Name.Substring(6, 2)
         Debug.Print(poNum.ToString)
         Dim sPath As String = "Z:\CLOUD STORAGE\JOB FILES\JOBS\" & JobNum.ToString & "\2 - PURCHASE ORDERS\" & poNum.ToString
         Debug.Print(sPath)
@@ -179,6 +189,8 @@
             MsgBox("No Job associated with this quote.")
         Else 'Open the job folder associated with this quote.
             'NOTE This does not account for multiple jobs referencing the same quote.
+            '+++ ADD MULTIPLES TO RIGHT CLICK MENU +++
+            'ALSO, dont need to query for job number as it's already populated with the job
             JobNumValue = AeroDBConn.DBds.Tables(0).Rows(0).Item("j_job")
             strPath += JobNumValue.ToString
             Process.Start(strPath)
