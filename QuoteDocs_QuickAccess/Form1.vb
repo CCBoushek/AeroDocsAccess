@@ -8,18 +8,14 @@
     Private SearchStringTxtLen As Integer = 0
     Private SpecialFilter As Boolean = False
     Private ReloadTimer As New Timer
-    Private bShowOpen As Boolean = False
-    Private bShowJob As Boolean = False
-    Private bShowDead As Boolean = False
-    Private bShowActive As Boolean = False
-    Private bShowClosed As Boolean = False
-    Private bCheckBoxOPenTemp As Boolean
-    Private bCheckBoxJobTemp As Boolean
-    Private bCheckBoxDeadTemp As Boolean
-    Private bCheckBoxActiveTemp As Boolean
+    Private bShowOpenQuotes As Boolean = False
+    Private bShowJobQuotes As Boolean = False
+    Private bShowDeadQuotes As Boolean = False
+    Private bShowActiveQuotes As Boolean = False
+    Private bShowOpenJobs As Boolean = False
+    Private bShowClosedJobs As Boolean = False
     Private bOverrideLBPopulate As Boolean = False
     Private bFilterSelected As Boolean = False
-    Private bCheckBoxesCleared As Boolean = False
     Dim X, Y As Integer
     Dim NewPoint As New System.Drawing.Point
     'This should/could be updated to show Jobs and be able to open the electronic job file/Folder When we start doing that. <-- Started 9/26/18... finished rev 1 on 9/26/18 which allows you to open jobs that are associated with a quote.
@@ -43,9 +39,6 @@
         Dim sSelExpression As String
         For i As Integer = 0 To dtQuotes.Rows.Count - 1
             Dim qt As New ucQuoteDetail
-
-
-
 
             With dtQuotes.Rows(i)
                 'Search the data rows array for the each quote and assign status
@@ -75,57 +68,55 @@
                 End If
                 qt.CustNum = iCustID
                 qt.QtNum = ValidResponse(.Item("QTnum"))
+                'You need to set QtNum or JobNum before setting QuoteOrJob Type since the QuoteOrJob routine sets the Quote or Job number on the label
+                qt.QuoteOrJob = ucQuoteDetail.DetailType.Quote
                 qt.Desc = ValidResponse(.Item("QTDesc"))
                 qt.CustName = sCustName
                 If ShowQt(qt) Then qt.Show() Else qt.Hide()
             End With
             flpQuotes.Controls.Add(qt)
         Next
-        flpQuotes.Visible = rbtnQuotes.Checked
-        flpJobs.Visible = rbtnJobs.Checked
     End Sub
 
     Private Sub LoadJobs(iCustID As Integer, sCustName As String)
-        Dim SQL As String = "SELECT * FROM JOB WHERE c_customer = " & iCustID & " ORDER BY j_job DESC"
+        Dim SQL As String = "SELECT * FROM JOB WHERE c_customer = " & iCustID & " AND j_entdate >= #" & DateTime.Now.AddDays(-730).ToString("MM/dd/yyy") & "# ORDER BY j_job DESC"
+        Debug.Print(SQL)
         AeroDBcon.RunQuery(SQL)
         dtJobs = AeroDBcon.DBds.Tables(0)
-        Dim z As Integer = flpJobs.Controls.Count
+
         Dim j As Integer
-        Dim inc As Integer = 20
-        If dtJobs.Rows.Count > z + inc Then
-            j = z + inc
+        j = dtJobs.Rows.Count
+        If j > 0 Then
+            For i As Integer = 0 To j - 1
+                With dtJobs.Rows(i)
+                    Dim qt As New ucQuoteDetail
+                    'Debug.Print("Status: " & .Item("j_status"))
+                    If IsDBNull(.Item("j_status")) Then
+                        'DB field is just blank if the job is open, "C" if closed
+                        qt.qStatus = ucQuoteDetail.qtStat.Open
+                        'if open, show PSale
+                        qt.JobValue = .Item("J_PSALE")
+                    ElseIf .Item("j_status") = "C" Then
+                        qt.qStatus = ucQuoteDetail.qtStat.Closed
+                        'If job is closed, display ASALE
+                        qt.JobValue = .Item("J_ASALE")
+                    End If
+                    qt.poCount = .Item("J_POCOUNT")
+                    qt.CustNum = iCustID
+                    qt.JobNum = .Item("J_JOB")
+                    If Not IsDBNull(.Item("Q_QUOTE")) Then
+                        qt.QtNum = .Item("Q_QUOTE")
+                    End If
+                    qt.QuoteOrJob = ucQuoteDetail.DetailType.Job
+                    qt.Desc = ValidResponse(.Item("J_DESCRIPT"))
+                    qt.CustName = sCustName
+                    If ShowJob(qt) Then qt.Show() Else qt.Hide()
+                    flpJobs.Controls.Add(qt)
+                End With
+            Next
         Else
-            j = dtJobs.Rows.Count
+            'no records found
         End If
-        'Need a Try-Catch here if search returns no results
-        For i As Integer = X To j
-            With dtJobs.Rows(i)
-                Dim qt As New ucQuoteDetail
-                'Debug.Print("Status: " & .Item("j_status"))
-                If IsDBNull(.Item("j_status")) Then
-                    'DB field is just blank if the job is open, "C" if closed
-                    qt.qStatus = ucQuoteDetail.qtStat.Open
-                    'if open, show PSale
-                    qt.JobValue = .Item("J_PSALE")
-                ElseIf .Item("j_status") = "C" Then
-                    qt.qStatus = ucQuoteDetail.qtStat.Closed
-                    'If job is closed, display ASALE
-                    qt.JobValue = .Item("J_ASALE")
-                End If
-                qt.poCount = .Item("J_POCOUNT")
-                qt.CustNum = iCustID
-                qt.JobNum = .Item("J_JOB")
-                If Not IsDBNull(.Item("Q_QUOTE")) Then
-                    qt.QtNum = .Item("Q_QUOTE")
-                End If
-                qt.Desc = ValidResponse(.Item("J_DESCRIPT"))
-                qt.CustName = sCustName
-                If ShowJob(qt) Then qt.Show() Else qt.Hide()
-                flpJobs.Controls.Add(qt)
-            End With
-        Next
-        flpQuotes.Visible = rbtnQuotes.Checked
-        flpJobs.Visible = rbtnJobs.Checked
     End Sub
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles Me.Load
 
@@ -136,19 +127,23 @@
         Me.TransparencyKey = Me.BackColor
         'These are so the transparency on the controls works properly i think
         lblCust.Parent = PictureBox1
-        lblInstructions.Parent = PictureBox1
-        cbOpen.Parent = PictureBox1
-        cbJob.Parent = PictureBox1
-        cbDead.Parent = PictureBox1
-        rbtnJobs.Parent = PictureBox1
-        rbtnQuotes.Parent = PictureBox1
-        cbClosed.Parent = PictureBox1
+        lblQuoteNum.Parent = PictureBox1
+        lblJobNum.Parent = PictureBox1
+        cbOpenJobs.Parent = PictureBox1
+        cbOpenQuotes.Parent = PictureBox1
+        cbJobQuotes.Parent = PictureBox1
+        cbDeadQuotes.Parent = PictureBox1
+        cbClosedJobs.Parent = PictureBox1
         'FlowLayoutPanel1.Parent = PictureBox1
         KeyPreview = True
         tbCust.Select()
-        cbOpen.Checked = True
-        rbtnQuotes.Checked = True
+        cbOpenQuotes.Checked = True
+        cbOpenJobs.Checked = True
         lbCustSelect.AutoSize = True 'There is no AutoSize option to check in Properties in the designer for some reason so you have to set it here.
+
+        flpQuotes.Show()
+        flpJobs.Show()
+        Debug.Print(flpQuotes.Controls.Count)
     End Sub
     Private Function ValidResponse(DBValue As Object) As String
         If Not IsDBNull(DBValue) Then
@@ -161,12 +156,12 @@
     Private Sub btClose_Click() Handles btClose.Click
         Me.WindowState = FormWindowState.Minimized
     End Sub
-    Private Sub Form1_MouseDown(sender As Object, e As MouseEventArgs) Handles PictureBox1.MouseDown, lblInstructions.MouseDown, lblCust.MouseDown
+    Private Sub Form1_MouseDown(sender As Object, e As MouseEventArgs) Handles PictureBox1.MouseDown, lblCust.MouseDown, lblJobNum.MouseDown, lblQuoteNum.MouseDown
         X = Control.MousePosition.X - Me.Location.X
         Y = Control.MousePosition.Y - Me.Location.Y
     End Sub
 
-    Private Sub Form1_MouseMove(sender As Object, e As MouseEventArgs) Handles PictureBox1.MouseMove, lblInstructions.MouseMove, lblCust.MouseMove
+    Private Sub Form1_MouseMove(sender As Object, e As MouseEventArgs) Handles PictureBox1.MouseMove, lblCust.MouseMove, lblJobNum.MouseMove, lblQuoteNum.MouseMove
         If e.Button = MouseButtons.Left Then
             NewPoint = Control.MousePosition
             NewPoint.X -= (X)
@@ -208,19 +203,15 @@
             e.SuppressKeyPress = True
             Select Case e.KeyCode
                 Case Keys.J
-                    If Not bCheckBoxesCleared Then Clear_Check_Boxes()
-                    cbJob.Checked = Not cbJob.Checked 'Hide_Show_Quotes event is handled/fired by the radio_button_Changed event
+                    cbJobQuotes.Checked = Not cbJobQuotes.Checked 'Hide_Show_Quotes event is handled/fired by the radio_button_Changed event
                 Case Keys.D
-                    If Not bCheckBoxesCleared Then Clear_Check_Boxes()
-                    cbDead.Checked = Not cbDead.Checked
+                    cbDeadQuotes.Checked = Not cbDeadQuotes.Checked
                 Case Keys.O
-                    If Not bCheckBoxesCleared Then Clear_Check_Boxes()
-                    cbOpen.Checked = Not cbOpen.Checked
+                    cbOpenQuotes.Checked = Not cbOpenQuotes.Checked
+                    cbOpenJobs.Checked = Not cbOpenJobs.Checked
                 Case Keys.C
-                    If Not bCheckBoxesCleared Then Clear_Check_Boxes()
-                    cbClosed.Checked = Not cbClosed.Checked
+                    cbClosedJobs.Checked = Not cbClosedJobs.Checked
                 Case Keys.A
-                    'If Not bCheckBoxesCleared Then Clear_Check_Boxes()
                     'cbActive.Checked = Not cbActive.Checked
             End Select
         Else
@@ -234,11 +225,8 @@
                     lbCustSelect.Visible = False
                     flpQuotes.Controls.Clear()
                     flpJobs.Controls.Clear()
-                    If rbtnQuotes.Checked Then
-                        LoadQuotes(lbCustSelect.SelectedValue, sCustName)
-                    ElseIf rbtnJobs.Checked Then
-                        LoadJobs(lbCustSelect.SelectedValue, sCustName)
-                    End If
+                    LoadQuotes(lbCustSelect.SelectedValue, sCustName)
+                    LoadJobs(lbCustSelect.SelectedValue, sCustName)
                     bOverrideLBPopulate = False
                 Case Keys.Down
                     If Not lbCustSelect.SelectedIndex = lbCustSelect.Items.Count - 1 Then lbCustSelect.SelectedIndex = lbCustSelect.SelectedIndex + 1
@@ -259,51 +247,39 @@
             If ShowJob(q) Then q.Show() Else q.Hide()
         Next
     End Sub
-    Private Sub Clear_Check_Boxes()
-        'Clear all check boxes
-        cbDead.Checked = False
-        cbJob.Checked = False
-        cbOpen.Checked = False
-        cbClosed.Checked = False
-        'cbActive.checked = False
-        bCheckBoxesCleared = True
-        Debug.Print("CheckBoxes Cleared = " & bCheckBoxesCleared)
-    End Sub
-    Private Sub Filter_Checkboxes_Changed(sender As Object, e As EventArgs) Handles cbOpen.CheckedChanged, cbJob.CheckedChanged, cbDead.CheckedChanged, cbClosed.CheckedChanged
-        bShowJob = cbJob.Checked 'cbJob.Checked returns true if checked and false if not checked.
-        bShowDead = cbDead.Checked
-        bShowOpen = cbOpen.Checked
-        bShowActive = cbOpen.Checked 'Instead of having a checkbox for Active and Open, Open will show both open and active quotes.
-        bShowClosed = cbClosed.Checked
-        If rbtnQuotes.Checked Then
-            Hide_Show_Quotes()
-        ElseIf rbtnJobs.Checked Then
-            Hide_Show_Jobs()
-        End If
+    Private Sub Filter_Checkboxes_Changed(sender As Object, e As EventArgs) Handles cbOpenQuotes.CheckedChanged, cbJobQuotes.CheckedChanged, cbDeadQuotes.CheckedChanged, cbClosedJobs.CheckedChanged, cbOpenJobs.CheckedChanged
+        bShowJobQuotes = cbJobQuotes.Checked 'cbJob.Checked returns true if checked and false if not checked.
+        bShowDeadQuotes = cbDeadQuotes.Checked
+        bShowOpenQuotes = cbOpenQuotes.Checked
+        bShowActiveQuotes = cbOpenQuotes.Checked 'Instead of having a checkbox for Active and Open, Open will show both open and active quotes.
+        bShowClosedJobs = cbClosedJobs.Checked
+        bShowOpenJobs = cbOpenJobs.Checked
+        Hide_Show_Quotes()
+        Hide_Show_Jobs()
     End Sub
 
     Private Function ShowQt(Qt As ucQuoteDetail) As Boolean
         Select Case Qt.qStatus
             Case ucQuoteDetail.qtStat.Active
-                If bShowActive Then
+                If bShowActiveQuotes Then
                     Return True
                 Else
                     Return False
                 End If
             Case ucQuoteDetail.qtStat.Open
-                If bShowOpen Then
+                If bShowOpenQuotes Then
                     Return True
                 Else
                     Return False
                 End If
             Case ucQuoteDetail.qtStat.Dead
-                If bShowDead Then
+                If bShowDeadQuotes Then
                     Return True
                 Else
                     Return False
                 End If
             Case ucQuoteDetail.qtStat.Job
-                If bShowJob Then
+                If bShowJobQuotes Then
                     Return True
                 Else
                     Return False
@@ -315,13 +291,13 @@
     Private Function ShowJob(Qt As ucQuoteDetail) As Boolean
         Select Case Qt.qStatus
             Case ucQuoteDetail.qtStat.Closed
-                If bShowClosed Then
+                If bShowClosedJobs Then
                     Return True
                 Else
                     Return False
                 End If
             Case ucQuoteDetail.qtStat.Open
-                If bShowOpen Then
+                If bShowOpenJobs Then
                     Return True
                 Else
                     Return False
@@ -335,11 +311,8 @@
         tbCust.SelectAll()
     End Sub
 
-    Private Sub rbtnJobs_CheckedChanged(sender As Object, e As EventArgs) Handles rbtnJobs.CheckedChanged, rbtnQuotes.CheckedChanged
+    Private Sub rbtnJobs_CheckedChanged(sender As Object, e As EventArgs)
         'When the Jobs radio button is checked, the "Closed" check box should be visible and the "DEAD" and "JOB" check boxes should be hidden. This also reverses the hiding when Quotes is checked.
-        cbClosed.Visible = rbtnJobs.Checked
-        cbDead.Visible = Not rbtnJobs.Checked
-        cbJob.Visible = Not rbtnJobs.Checked
         tbCust.Focus()
         tbCust.SelectAll()
         flpQuotes.Controls.Clear()
@@ -347,18 +320,8 @@
 
         'Reload the quotes or jobs for that customer
         Dim sCustName As String = lbCustSelect.GetItemText(lbCustSelect.SelectedItem) 'This is the only way I could find to get the 'display memeber' of the listbox into a string (used a variable to save typing)
-        If rbtnQuotes.Checked Then
-            LoadQuotes(lbCustSelect.SelectedValue, sCustName)
-        ElseIf rbtnJobs.Checked Then
-            LoadJobs(lbCustSelect.SelectedValue, sCustName)
-        End If
+        LoadQuotes(lbCustSelect.SelectedValue, sCustName)
+        LoadJobs(lbCustSelect.SelectedValue, sCustName)
     End Sub
 
-    Private Sub Form1_KeyUp(sender As Object, e As KeyEventArgs) Handles Me.KeyUp
-        Debug.Print(e.KeyCode.ToString)
-        If e.KeyCode.ToString = "ControlKey" Then 'I can't figure out how to detect the CTRL KeyUp event any other way than this which seems really dumb.
-            bCheckBoxesCleared = False
-            Debug.Print("Check Boxes Cleared = " & bCheckBoxesCleared)
-        End If
-    End Sub
 End Class

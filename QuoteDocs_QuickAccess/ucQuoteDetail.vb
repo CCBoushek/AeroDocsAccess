@@ -9,7 +9,20 @@
     Private qStat As qtStat
     Private _poCount As Integer
     Private _JobValue As Double
-
+    Private QuoteOrJobValue As String
+    Public Property QuoteOrJob() As DetailType
+        Get
+            Return QuoteOrJobValue
+        End Get
+        Set(ByVal value As DetailType)
+            QuoteOrJobValue = value
+            If value = DetailType.Job Then
+                lbRefNum.Text = UCase(JobNumValue)
+            ElseIf value = DetailType.Quote Then
+                lbRefNum.Text = UCase(QtNumValue)
+            End If
+        End Set
+    End Property
     Public Property JobValue As Double
         Get
             Return _JobValue
@@ -18,7 +31,6 @@
             _JobValue = Value
         End Set
     End Property
-
     Public Property poCount As Integer
         Get
             Return _poCount
@@ -33,11 +45,15 @@
         End Set
     End Property
     Private Sub poFolder_click(sender As ToolStripMenuItem, e As EventArgs)
-        Dim poNum As Integer = JobNumValue & sender.Name.Substring(6, 2)
-        Debug.Print(poNum.ToString)
-        Dim sPath As String = "Z:\CLOUD STORAGE\JOB FILES\JOBS\" & JobNum.ToString & "\2 - PURCHASE ORDERS\" & poNum.ToString
-        Debug.Print(sPath)
-        Process.Start(sPath)
+        Try
+            Dim poNum As Integer = JobNumValue & sender.Name.Substring(6, 2)
+            Debug.Print(poNum.ToString)
+            Dim sPath As String = "Z:\CLOUD STORAGE\JOB FILES\JOBS\" & JobNum.ToString & "\2 - PURCHASE ORDERS\" & poNum.ToString
+            Debug.Print(sPath)
+            Process.Start(sPath)
+        Catch ex As Exception
+            MessageBox.Show(ex.Message)
+        End Try
     End Sub
 
     Public Property qStatus() As qtStat
@@ -60,7 +76,10 @@
             End Select
         End Set
     End Property
-
+    Public Enum DetailType
+        Quote
+        Job
+    End Enum
     Public Enum qtStat
         Active
         Open
@@ -78,7 +97,6 @@
         End Get
         Set(ByVal value As String)
             QtNumValue = value
-            lbQtNum.Text = QtNumValue
             If Mid(QtNumValue, 6, 1).ToLower.Contains("p") Then
                 qType = qtType.Part
             Else
@@ -91,7 +109,7 @@
             Return DescValue
         End Get
         Set(ByVal value As String)
-            DescValue = value
+            DescValue = UCase(value)
             lbDesc.Text = DescValue
         End Set
     End Property
@@ -129,19 +147,47 @@
         bVisible = True
     End Sub
 
-    Private Sub Open_Quote_Folder(sender As Object, e As EventArgs) Handles Me.DoubleClick, lbCustName.DoubleClick, lbDesc.DoubleClick, lbQtNum.DoubleClick, OpenQtFldr_ContextMenuItem.Click
-        Dim strPath As String = "Z:\CLOUD STORAGE\QUOTES\"
-        Select Case qType
-            Case qtType.Part
-                strPath += "PARTS\"
-            Case qtType.System
-                strPath += "SYSTEMS\"
-        End Select
-        strPath += "QUOTE DOCs\" & QtNum & "\"
-        Process.Start(strPath)
+    Private Sub Open_Folder(sender As Object, e As EventArgs) Handles Me.DoubleClick, lbCustName.DoubleClick, lbDesc.DoubleClick, lbRefNum.DoubleClick
+        Try
+            Dim strPath As String
+            If QuoteOrJob = DetailType.Job Then
+                strPath = "Z:\CLOUD STORAGE\JOB FILES\JOBS\"
+                strPath += JobNum & "\"
+                Process.Start(strPath)
+            ElseIf QuoteOrJob = DetailType.Quote Then
+                strPath = "Z:\CLOUD STORAGE\QUOTES\"
+                Select Case qType
+                    Case qtType.Part
+                        strPath += "PARTS\"
+                    Case qtType.System
+                        strPath += "SYSTEMS\"
+                End Select
+                strPath += "QUOTE DOCs\" & QtNum & "\"
+                Process.Start(strPath)
+            End If
+
+        Catch ex As Exception
+            MsgBox(ex.Message)
+        End Try
     End Sub
 
-    Private Sub OpenORCreate_Quote_Sent_Folder(sender As Object, e As EventArgs) Handles Me.Click, lbQtNum.Click, lbDesc.Click, lbCustName.Click
+    Private Sub Open_Quote_Folder(sender As Object, e As EventArgs) Handles OpenQtFldr_ContextMenuItem.Click
+        Try
+            Dim strPath As String = "Z:\CLOUD STORAGE\QUOTES\"
+            Select Case qType
+                Case qtType.Part
+                    strPath += "PARTS\"
+                Case qtType.System
+                    strPath += "SYSTEMS\"
+            End Select
+            strPath += "QUOTE DOCs\" & QtNum & "\"
+            Process.Start(strPath)
+        Catch ex As Exception
+            MsgBox(ex.Message)
+        End Try
+
+    End Sub
+    Private Sub OpenORCreate_Quote_Sent_Folder(sender As Object, e As EventArgs) Handles Me.Click, lbRefNum.Click, lbDesc.Click, lbCustName.Click
         Dim strPath As String = "Z:\CLOUD STORAGE\QUOTES\"
         Select Case qType
             Case qtType.Part
@@ -180,21 +226,24 @@
 
     End Sub
     Private Sub Open_Job_Folder(sender As Object, e As EventArgs) Handles menuJobFolder.Click
-        Dim strPath As String = "Z:\CLOUD STORAGE\JOB FILES\JOBS\"
-        'find job(s) related to that quote
-        Dim AeroDBConn As New AeroDBConnection
-        Dim SQL As String = "SELECT j_job FROM QUOTE WHERE q_quote = '" & QtNumValue & "'"
-        AeroDBConn.RunQuery(SQL)
-        If IsDBNull(AeroDBConn.DBds.Tables(0).Rows(0).Item("j_job")) Then
-            MsgBox("No Job associated with this quote.")
-        Else 'Open the job folder associated with this quote.
-            'NOTE This does not account for multiple jobs referencing the same quote.
-            '+++ ADD MULTIPLES TO RIGHT CLICK MENU +++
-            'ALSO, dont need to query for job number as it's already populated with the job
-            JobNumValue = AeroDBConn.DBds.Tables(0).Rows(0).Item("j_job")
-            strPath += JobNumValue.ToString
-            Process.Start(strPath)
-        End If
+        Try
+            Dim strPath As String = "Z:\CLOUD STORAGE\JOB FILES\JOBS\"
+            'find job(s) related to that quote
+            Dim AeroDBConn As New AeroDBConnection
+            Dim SQL As String = "SELECT j_job FROM QUOTE WHERE q_quote = '" & QtNumValue & "'"
+            AeroDBConn.RunQuery(SQL)
+            If IsDBNull(AeroDBConn.DBds.Tables(0).Rows(0).Item("j_job")) Then
+                MsgBox("No Job associated with this quote.")
+            Else 'Open the job folder associated with this quote.
+                'NOTE This does not account for multiple jobs referencing the same quote.
+                '+++ ADD MULTIPLES TO RIGHT CLICK MENU +++
+                'ALSO, dont need to query for job number as it's already populated with the job
+                JobNumValue = AeroDBConn.DBds.Tables(0).Rows(0).Item("j_job")
+                strPath += JobNumValue.ToString
+                Process.Start(strPath)
+            End If
+        Catch ex As Exception
+            MsgBox(ex.Message)
+        End Try
     End Sub
-
 End Class
