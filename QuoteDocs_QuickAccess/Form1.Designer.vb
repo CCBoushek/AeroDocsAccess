@@ -37,6 +37,8 @@ Partial Class Form1
         Me.cbOpenJobs = New System.Windows.Forms.CheckBox()
         Me.lblQuoteNum = New System.Windows.Forms.Label()
         Me.lblJobNum = New System.Windows.Forms.Label()
+        Me.lblJobCount = New System.Windows.Forms.Label()
+        Me.lblQuoteCount = New System.Windows.Forms.Label()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -87,6 +89,7 @@ Partial Class Form1
         Me.flpQuotes.Name = "flpQuotes"
         Me.flpQuotes.Size = New System.Drawing.Size(373, 50)
         Me.flpQuotes.TabIndex = 13
+        Me.flpQuotes.Visible = False
         Me.flpQuotes.WrapContents = False
         '
         'PictureBox1
@@ -178,6 +181,7 @@ Partial Class Form1
         Me.flpJobs.Name = "flpJobs"
         Me.flpJobs.Size = New System.Drawing.Size(373, 50)
         Me.flpJobs.TabIndex = 14
+        Me.flpJobs.Visible = False
         Me.flpJobs.WrapContents = False
         '
         'cbOpenJobs
@@ -214,6 +218,26 @@ Partial Class Form1
         Me.lblJobNum.TabIndex = 1
         Me.lblJobNum.Text = "Job #:"
         '
+        'lblJobCount
+        '
+        Me.lblJobCount.AutoSize = True
+        Me.lblJobCount.BackColor = System.Drawing.Color.Transparent
+        Me.lblJobCount.Location = New System.Drawing.Point(465, 57)
+        Me.lblJobCount.Name = "lblJobCount"
+        Me.lblJobCount.Size = New System.Drawing.Size(72, 17)
+        Me.lblJobCount.TabIndex = 22
+        Me.lblJobCount.Text = "Job Count"
+        '
+        'lblQuoteCount
+        '
+        Me.lblQuoteCount.AutoSize = True
+        Me.lblQuoteCount.BackColor = System.Drawing.Color.Transparent
+        Me.lblQuoteCount.Location = New System.Drawing.Point(154, 57)
+        Me.lblQuoteCount.Name = "lblQuoteCount"
+        Me.lblQuoteCount.Size = New System.Drawing.Size(64, 17)
+        Me.lblQuoteCount.TabIndex = 22
+        Me.lblQuoteCount.Text = "Qt Count"
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
@@ -223,6 +247,8 @@ Partial Class Form1
         Me.CancelButton = Me.btClose
         Me.ClientSize = New System.Drawing.Size(752, 132)
         Me.Controls.Add(Me.lbCustSelect)
+        Me.Controls.Add(Me.lblQuoteCount)
+        Me.Controls.Add(Me.lblJobCount)
         Me.Controls.Add(Me.flpJobs)
         Me.Controls.Add(Me.cbClosedJobs)
         Me.Controls.Add(Me.cbDeadQuotes)
@@ -262,4 +288,6 @@ Partial Class Form1
     Friend WithEvents cbOpenJobs As CheckBox
     Friend WithEvents lblQuoteNum As Label
     Friend WithEvents lblJobNum As Label
+    Friend WithEvents lblJobCount As Label
+    Friend WithEvents lblQuoteCount As Label
 End Class

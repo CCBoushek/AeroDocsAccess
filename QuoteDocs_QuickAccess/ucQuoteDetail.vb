@@ -19,7 +19,7 @@
             If value = DetailType.Job Then
                 lbRefNum.Text = UCase(JobNumValue)
             ElseIf value = DetailType.Quote Then
-                lbRefNum.Text = UCase(QtNumValue)
+                'lbRefNum.Text = UCase(QtNumValue)
             End If
         End Set
     End Property

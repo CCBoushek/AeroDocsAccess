@@ -16,6 +16,7 @@
     Private bShowClosedJobs As Boolean = False
     Private bOverrideLBPopulate As Boolean = False
     Private bFilterSelected As Boolean = False
+    Public pStopWatch As New Stopwatch
     Dim X, Y As Integer
     Dim NewPoint As New System.Drawing.Point
     'This should/could be updated to show Jobs and be able to open the electronic job file/Folder When we start doing that. <-- Started 9/26/18... finished rev 1 on 9/26/18 which allows you to open jobs that are associated with a quote.
@@ -23,6 +24,9 @@
     'Also, Should be able to filter/choose to show or not Dead Quotes and Job Quotes <-- done a while ago
 
     Private Sub LoadQuotes(iCustID As Integer, sCustName As String)
+        pStopWatch.Start()
+
+
         'Search Quotes accdb for Quotes related to the selected customer
         Dim SQL As String = "SELECT QTnum, QTDesc, EntDate, QTamt FROM QuoteDetails WHERE CustID = " & iCustID & " ORDER BY EntDate DESC"
         DBcon.RunQuery(SQL)
@@ -37,6 +41,7 @@
         Dim drs As DataRow() 'array of data rows
         Dim dr As DataRow 'Single data row
         Dim sSelExpression As String
+        lblQuoteCount.Text = "Quote Count: " & dtQuotes.Rows.Count
         For i As Integer = 0 To dtQuotes.Rows.Count - 1
             Dim qt As New ucQuoteDetail
 
@@ -76,18 +81,25 @@
             End With
             flpQuotes.Controls.Add(qt)
         Next
+        pStopWatch.Stop()
+        Console.WriteLine("Load Quotes took: {0} ms", pStopWatch.Elapsed.ToString())
     End Sub
 
     Private Sub LoadJobs(iCustID As Integer, sCustName As String)
-        Dim SQL As String = "SELECT * FROM JOB WHERE c_customer = " & iCustID & " AND j_entdate >= #" & DateTime.Now.AddDays(-730).ToString("MM/dd/yyy") & "# ORDER BY j_job DESC"
+        pStopWatch.Reset()
+        pStopWatch.Start()
+        'AND j_entdate >= #" & DateTime.Now.AddDays(-730).ToString("MM/dd/yyy") & "# 
+        Dim SQL As String = "SELECT * FROM JOB WHERE c_customer = " & iCustID & " ORDER BY j_job DESC"
         Debug.Print(SQL)
         AeroDBcon.RunQuery(SQL)
         dtJobs = AeroDBcon.DBds.Tables(0)
 
         Dim j As Integer
         j = dtJobs.Rows.Count
+        Dim k As Integer = Math.Min(j, 200)
+        lblJobCount.Text = "Job Count: " & k
         If j > 0 Then
-            For i As Integer = 0 To j - 1
+            For i As Integer = 0 To k - 1
                 With dtJobs.Rows(i)
                     Dim qt As New ucQuoteDetail
                     'Debug.Print("Status: " & .Item("j_status"))
@@ -117,6 +129,9 @@
         Else
             'no records found
         End If
+
+        pStopWatch.Stop()
+        Console.WriteLine("Load Jobs took: {0} ms", pStopWatch.Elapsed.ToString())
     End Sub
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles Me.Load
 
@@ -134,6 +149,8 @@
         cbJobQuotes.Parent = PictureBox1
         cbDeadQuotes.Parent = PictureBox1
         cbClosedJobs.Parent = PictureBox1
+        lblJobCount.Parent = PictureBox1
+        lblQuoteCount.Parent = PictureBox1
         'FlowLayoutPanel1.Parent = PictureBox1
         KeyPreview = True
         tbCust.Select()
@@ -225,8 +242,9 @@
                     lbCustSelect.Visible = False
                     flpQuotes.Controls.Clear()
                     flpJobs.Controls.Clear()
+                    'LoadJobs(lbCustSelect.SelectedValue, sCustName)
                     LoadQuotes(lbCustSelect.SelectedValue, sCustName)
-                    LoadJobs(lbCustSelect.SelectedValue, sCustName)
+
                     bOverrideLBPopulate = False
                 Case Keys.Down
                     If Not lbCustSelect.SelectedIndex = lbCustSelect.Items.Count - 1 Then lbCustSelect.SelectedIndex = lbCustSelect.SelectedIndex + 1
