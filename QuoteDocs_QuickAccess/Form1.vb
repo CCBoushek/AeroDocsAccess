@@ -24,30 +24,41 @@
     'Also, Should be able to filter/choose to show or not Dead Quotes and Job Quotes <-- done a while ago
 
     Private Sub LoadQuotes(iCustID As Integer, sCustName As String)
+        Console.WriteLine("Loading Quotes")
+        pStopWatch.Reset()
         pStopWatch.Start()
-
-
+        Dim t0 As Double = pStopWatch.ElapsedMilliseconds
         'Search Quotes accdb for Quotes related to the selected customer
         Dim SQL As String = "SELECT QTnum, QTDesc, EntDate, QTamt FROM QuoteDetails WHERE CustID = " & iCustID & " ORDER BY EntDate DESC"
         DBcon.RunQuery(SQL)
+        Dim t1 As Double = pStopWatch.ElapsedMilliseconds
+        Console.WriteLine("  ACCDB Query took {0}ms", t1 - t0)
         dtQuotes = DBcon.DBds.Tables(0)
-        'Search QUOTE.DBF for quotes for the selected customer (this is to retrieve quote status)
-        Dim aSQL As String = "SELECT * FROM QUOTE WHERE c_customer = " & iCustID
+        Dim t2 As Double = pStopWatch.ElapsedMilliseconds
+        Console.WriteLine("  Filling Datatable took {0}ms", t2 - t1)
+        'Query DBF the selected customer to retrieve Quote Status and PO count
+        'Dim aSQL As String = "SELECT * FROM QUOTE WHERE c_customer = " & iCustID
+        Dim aSQL As String = "SELECT * FROM QUOTE a LEFT JOIN JOB b ON a.Q_QUOTE = b.Q_QUOTE WHERE a.C_CUSTOMER = " & iCustID
         AeroDBcon.RunQuery(aSQL)
+        Dim t3 As Double = pStopWatch.ElapsedMilliseconds
+        Console.WriteLine("  DBF Query took {0}ms", t3 - t2)
         Dim dtQuoteDBF As New DataTable
         dtQuoteDBF = AeroDBcon.DBds.Tables(0)
-
+        Dim t4 As Double = pStopWatch.ElapsedMilliseconds
+        Console.WriteLine("  Fill DBF Datatable took {0}ms", t4 - t3)
         'Loop through the quotes retrieved from the accdb and assign their status
         Dim drs As DataRow() 'array of data rows
         Dim dr As DataRow 'Single data row
         Dim sSelExpression As String
         lblQuoteCount.Text = "Quote Count: " & dtQuotes.Rows.Count
-        For i As Integer = 0 To dtQuotes.Rows.Count - 1
+        Dim i As Integer
+        Dim z As Integer
+        For i = 0 To dtQuotes.Rows.Count - 1
             Dim qt As New ucQuoteDetail
 
             With dtQuotes.Rows(i)
-                'Search the data rows array for the each quote and assign status
-                sSelExpression = "Q_QUOTE = '" & .Item("QTnum") & "'"
+                'Search the data rows array for each quote and assign status
+                sSelExpression = "a.Q_QUOTE = '" & .Item("QTnum") & "'"
                 'Debug.Print(sSelExpression)
                 drs = dtQuoteDBF.Select(sSelExpression)
                 If drs.Count = 1 Then
@@ -57,13 +68,15 @@
                             qt.qStatus = ucQuoteDetail.qtStat.Open
                         Case "J"
                             qt.qStatus = ucQuoteDetail.qtStat.Job
-                            qt.JobNum = ValidResponse(dr("j_job"))
+                            qt.JobNum = ValidResponse(dr("b.j_job"))
                             Try
-                                SQL = "SELECT * FROM JOB WHERE J_JOB = " & dr("j_job")
-                                AeroDBcon.RunQuery(SQL)
-                                qt.poCount = AeroDBcon.DBds.Tables(0).Rows(0).Item("J_POCOUNT")
+                                'SQL = "SELECT * FROM JOB WHERE J_JOB = " & dr("j_job")
+                                'AeroDBcon.RunQuery(SQL)
+                                qt.poCount = ValidResponse(dr("J_POCOUNT"))
                             Catch ex As Exception
+                                z = z + 1
                                 Debug.Print(ex.Message)
+                                Debug.Print("Job: " & qt.JobNum & " Quote: " & .Item("QTnum"))
                             End Try
                         Case "D"
                             qt.qStatus = ucQuoteDetail.qtStat.Dead
@@ -81,25 +94,33 @@
             End With
             flpQuotes.Controls.Add(qt)
         Next
+        Dim t5 As Double = pStopWatch.ElapsedMilliseconds
         pStopWatch.Stop()
-        Console.WriteLine("Load Quotes took: {0} ms", pStopWatch.Elapsed.ToString())
+        Console.WriteLine("{0} Errors", z)
+        Console.WriteLine("  t0:{0}, t5:{1}, i:{2}", t0, t5, i)
+        Console.WriteLine("  Loaded {0} Quotes in {1} ms [{2}ms/qt]", i, t5 - t0, (t5 - t0) / i)
     End Sub
 
     Private Sub LoadJobs(iCustID As Integer, sCustName As String)
+        Console.WriteLine("Loading Jobs")
         pStopWatch.Reset()
         pStopWatch.Start()
+        Dim t0 As Double = pStopWatch.ElapsedMilliseconds
         'AND j_entdate >= #" & DateTime.Now.AddDays(-730).ToString("MM/dd/yyy") & "# 
         Dim SQL As String = "SELECT * FROM JOB WHERE c_customer = " & iCustID & " ORDER BY j_job DESC"
-        Debug.Print(SQL)
         AeroDBcon.RunQuery(SQL)
+        Dim t1 As Double = pStopWatch.ElapsedMilliseconds
+        Console.WriteLine("  DBF Query took {0}ms", t1 - t0)
         dtJobs = AeroDBcon.DBds.Tables(0)
-
+        Dim t2 As Double = pStopWatch.ElapsedMilliseconds
+        Console.WriteLine("  Fill Datatable took {0}ms", t2 - t1)
         Dim j As Integer
         j = dtJobs.Rows.Count
         Dim k As Integer = Math.Min(j, 200)
         lblJobCount.Text = "Job Count: " & k
+        Dim i As Integer
         If j > 0 Then
-            For i As Integer = 0 To k - 1
+            For i = 0 To k - 1
                 With dtJobs.Rows(i)
                     Dim qt As New ucQuoteDetail
                     'Debug.Print("Status: " & .Item("j_status"))
@@ -129,9 +150,10 @@
         Else
             'no records found
         End If
-
+        Dim t3 As Double = pStopWatch.ElapsedMilliseconds
         pStopWatch.Stop()
-        Console.WriteLine("Load Jobs took: {0} ms", pStopWatch.Elapsed.ToString())
+        Console.WriteLine("  t0:{0}, t3:{1}, i:{2}", t0, t3, i)
+        Console.WriteLine("  Loaded {0} Jobs in {1} ms [{2}ms/Job]", i, t3 - t0, (t3 - t0) / j)
     End Sub
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles Me.Load
 
@@ -166,7 +188,7 @@
         If Not IsDBNull(DBValue) Then
             Return DBValue
         Else
-            Return ""
+            Return 0
         End If
     End Function
 
@@ -200,7 +222,7 @@
             lbCustSelect.Visible = True
             Dim SQL As String
             SQL = "SELECT C_CUSTOMER as ID, C_SHIPNAME as Name FROM CUSTOMER WHERE LEFT(C_SHIPNAME," & tbCust.TextLength & ") ='" & tbCust.Text & "'"
-            Debug.Print(SQL)
+            'Debug.Print(SQL)
             AeroDBcon.RunQuery(SQL)
             dtCustomers = AeroDBcon.DBds.Tables(0)
             lbCustSelect.DataSource = dtCustomers
@@ -242,7 +264,7 @@
                     lbCustSelect.Visible = False
                     flpQuotes.Controls.Clear()
                     flpJobs.Controls.Clear()
-                    'LoadJobs(lbCustSelect.SelectedValue, sCustName)
+                    LoadJobs(lbCustSelect.SelectedValue, sCustName)
                     LoadQuotes(lbCustSelect.SelectedValue, sCustName)
 
                     bOverrideLBPopulate = False

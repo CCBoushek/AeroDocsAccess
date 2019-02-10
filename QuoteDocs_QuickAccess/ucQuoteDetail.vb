@@ -19,7 +19,7 @@
             If value = DetailType.Job Then
                 lbRefNum.Text = UCase(JobNumValue)
             ElseIf value = DetailType.Quote Then
-                'lbRefNum.Text = UCase(QtNumValue)
+                lbRefNum.Text = UCase(QtNumValue)
             End If
         End Set
     End Property
@@ -37,11 +37,13 @@
         End Get
         Set
             _poCount = Value 'Value must be the number passed to this sub? Strange that it's not in the declaration
-            For i As Integer = 1 To _poCount
-                Dim menu1 As New ToolStripMenuItem() With {.Text = "-" & i.ToString("D2"), .Name = "poItem" & i.ToString("D2")}
-                menuJobFolder.DropDownItems.Add(menu1)
-                AddHandler menu1.Click, AddressOf poFolder_click
-            Next
+            If _poCount > 0 Then
+                For i As Integer = 1 To _poCount - 1
+                    Dim menu1 As New ToolStripMenuItem() With {.Text = "-" & i.ToString("D2"), .Name = "poItem" & i.ToString("D2")}
+                    menuJobFolder.DropDownItems.Add(menu1)
+                    AddHandler menu1.Click, AddressOf poFolder_click
+                Next
+            End If
         End Set
     End Property
     Private Sub poFolder_click(sender As ToolStripMenuItem, e As EventArgs)
