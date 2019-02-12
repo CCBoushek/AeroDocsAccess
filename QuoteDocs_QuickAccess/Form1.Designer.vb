@@ -45,7 +45,7 @@ Partial Class Form1
         'btClose
         '
         Me.btClose.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.btClose.Location = New System.Drawing.Point(526, 39)
+        Me.btClose.Location = New System.Drawing.Point(650, 39)
         Me.btClose.Name = "btClose"
         Me.btClose.Size = New System.Drawing.Size(25, 23)
         Me.btClose.TabIndex = 10
@@ -55,9 +55,10 @@ Partial Class Form1
         '
         'lblCust
         '
+        Me.lblCust.AutoSize = True
         Me.lblCust.BackColor = System.Drawing.Color.Transparent
         Me.lblCust.Font = New System.Drawing.Font("Microsoft Sans Serif", 13.8!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblCust.Location = New System.Drawing.Point(82, 16)
+        Me.lblCust.Location = New System.Drawing.Point(57, 16)
         Me.lblCust.Name = "lblCust"
         Me.lblCust.Size = New System.Drawing.Size(123, 29)
         Me.lblCust.TabIndex = 1
@@ -258,10 +259,10 @@ Partial Class Form1
         Me.Controls.Add(Me.lblJobNum)
         Me.Controls.Add(Me.lblQuoteNum)
         Me.Controls.Add(Me.lblCust)
-        Me.Controls.Add(Me.btClose)
         Me.Controls.Add(Me.flpJobs)
         Me.Controls.Add(Me.flpQuotes)
         Me.Controls.Add(Me.PictureBox1)
+        Me.Controls.Add(Me.btClose)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.Name = "Form1"
