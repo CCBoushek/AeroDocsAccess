@@ -46,9 +46,15 @@
             End If
         End Set
     End Property
+    Public Sub ADD_PO(PO_Number As String, PO_Vendor As String)
+        Dim menu1 As New ToolStripMenuItem() With {.Text = "-" & Mid(PO_Number, 8) & " (" & PO_Vendor & ")", .Name = PO_Number}
+        menuJobFolder.DropDownItems.Add(menu1)
+        AddHandler menu1.Click, AddressOf poFolder_click
+    End Sub
     Private Sub poFolder_click(sender As ToolStripMenuItem, e As EventArgs)
         Try
-            Dim poNum As Integer = JobNumValue & sender.Name.Substring(6, 2)
+            'poNum is taken from the name (.Name) of the menu item
+            Dim poNum As Integer = sender.Name
             Debug.Print(poNum.ToString)
             Dim sPath As String = "Z:\CLOUD STORAGE\JOB FILES\JOBS\" & JobNum.ToString & "\2 - PURCHASE ORDERS\" & poNum.ToString
             Debug.Print(sPath)

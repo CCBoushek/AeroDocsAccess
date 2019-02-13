@@ -107,7 +107,8 @@
         pStopWatch.Start()
         Dim t0 As Double = pStopWatch.ElapsedMilliseconds
         'AND j_entdate >= #" & DateTime.Now.AddDays(-730).ToString("MM/dd/yyy") & "# 
-        Dim SQL As String = "SELECT * FROM JOB WHERE c_customer = " & iCustID & " ORDER BY j_job DESC"
+        'Dim SQL As String = "SELECT * FROM JOB WHERE c_customer = " & iCustID & " ORDER BY j_job DESC"
+        Dim SQL As String = "SELECT a.*, PO_NUMBER, V_NAME FROM ((JOB a LEFT JOIN PO b ON a.J_JOB = b.J_JOB) LEFT JOIN VENDOR c On b.V_VENDOR = c.V_VENDOR) WHERE a.c_customer = " & iCustID & " ORDER BY a.J_JOB DESC, PO_NUMBER ASC"
         AeroDBcon.RunQuery(SQL)
         Dim t1 As Double = pStopWatch.ElapsedMilliseconds
         Console.WriteLine("  DBF Query took {0}ms", t1 - t0)
@@ -115,41 +116,51 @@
         Dim t2 As Double = pStopWatch.ElapsedMilliseconds
         Console.WriteLine("  Fill Datatable took {0}ms", t2 - t1)
         Dim j As Integer
-        j = dtJobs.Rows.Count
-        Dim k As Integer = Math.Min(j, 200)
-        lblJobCount.Text = "Job Count: " & k
+        j = dtJobs.Rows.Count - 1
         Dim i As Integer
+        Dim J_JOB As Integer
         If j > 0 Then
-            For i = 0 To k - 1
+            Dim qt As ucQuoteDetail
+            For i = 0 To j - 1
                 With dtJobs.Rows(i)
-                    Dim qt As New ucQuoteDetail
+                    qt = New ucQuoteDetail
                     'Debug.Print("Status: " & .Item("j_status"))
-                    If IsDBNull(.Item("j_status")) Then
+                    If IsDBNull(.Item("J_STATUS")) Then
                         'DB field is just blank if the job is open, "C" if closed
                         qt.qStatus = ucQuoteDetail.qtStat.Open
                         'if open, show PSale
                         qt.JobValue = .Item("J_PSALE")
-                    ElseIf .Item("j_status") = "C" Then
+                    ElseIf .Item("J_STATUS") = "C" Then
                         qt.qStatus = ucQuoteDetail.qtStat.Closed
                         'If job is closed, display ASALE
                         qt.JobValue = .Item("J_ASALE")
                     End If
-                    qt.poCount = .Item("J_POCOUNT")
                     qt.CustNum = iCustID
-                    qt.JobNum = .Item("J_JOB")
                     If Not IsDBNull(.Item("Q_QUOTE")) Then
                         qt.QtNum = .Item("Q_QUOTE")
                     End If
+                    'qt.JobNum has to be set before setting the type. Ref Number shown on detail is set when setting Type.
+                    J_JOB = .Item("J_JOB")
+                    qt.JobNum = J_JOB
                     qt.QuoteOrJob = ucQuoteDetail.DetailType.Job
                     qt.Desc = ValidResponse(.Item("J_DESCRIPT"))
                     qt.CustName = sCustName
-                    If ShowJob(qt) Then qt.Show() Else qt.Hide()
-                    flpJobs.Controls.Add(qt)
                 End With
+
+                Do Until dtJobs.Rows(i).Item("J_JOB") <> J_JOB Or i = j
+                    If Not IsDBNull(dtJobs.Rows(i).Item("PO_NUMBER")) And Not IsDBNull(dtJobs.Rows(i).Item("V_NAME")) Then
+                        'Add PO's to the detail for the right click menu function
+                        qt.ADD_PO(dtJobs.Rows(i).Item("PO_NUMBER"), dtJobs.Rows(i).Item("V_NAME"))
+                    End If
+                    i = i + 1
+                Loop
+                If ShowJob(qt) Then qt.Show() Else qt.Hide()
+                flpJobs.Controls.Add(qt)
             Next
         Else
             'no records found
         End If
+        lblJobCount.Text = "Job Count: " & j
         Dim t3 As Double = pStopWatch.ElapsedMilliseconds
         pStopWatch.Stop()
         Console.WriteLine("  t0:{0}, t3:{1}, i:{2}", t0, t3, i)
