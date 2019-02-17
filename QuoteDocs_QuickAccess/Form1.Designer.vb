@@ -96,9 +96,9 @@ Partial Class Form1
         'PictureBox1
         '
         Me.PictureBox1.Image = Global.QuoteDocs_QuickAccess.My.Resources.Resources.Button_Background_MedDark
-        Me.PictureBox1.Location = New System.Drawing.Point(26, 0)
+        Me.PictureBox1.Location = New System.Drawing.Point(0, 0)
         Me.PictureBox1.Name = "PictureBox1"
-        Me.PictureBox1.Size = New System.Drawing.Size(690, 127)
+        Me.PictureBox1.Size = New System.Drawing.Size(752, 127)
         Me.PictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
         Me.PictureBox1.TabIndex = 11
         Me.PictureBox1.TabStop = False
@@ -202,7 +202,7 @@ Partial Class Form1
         Me.lblQuoteNum.AutoSize = True
         Me.lblQuoteNum.BackColor = System.Drawing.Color.Transparent
         Me.lblQuoteNum.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblQuoteNum.Location = New System.Drawing.Point(56, 50)
+        Me.lblQuoteNum.Location = New System.Drawing.Point(56, 41)
         Me.lblQuoteNum.Name = "lblQuoteNum"
         Me.lblQuoteNum.Size = New System.Drawing.Size(88, 25)
         Me.lblQuoteNum.TabIndex = 1
@@ -213,7 +213,7 @@ Partial Class Form1
         Me.lblJobNum.AutoSize = True
         Me.lblJobNum.BackColor = System.Drawing.Color.Transparent
         Me.lblJobNum.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblJobNum.Location = New System.Drawing.Point(391, 50)
+        Me.lblJobNum.Location = New System.Drawing.Point(391, 41)
         Me.lblJobNum.Name = "lblJobNum"
         Me.lblJobNum.Size = New System.Drawing.Size(67, 25)
         Me.lblJobNum.TabIndex = 1
@@ -223,7 +223,7 @@ Partial Class Form1
         '
         Me.lblJobCount.AutoSize = True
         Me.lblJobCount.BackColor = System.Drawing.Color.Transparent
-        Me.lblJobCount.Location = New System.Drawing.Point(465, 57)
+        Me.lblJobCount.Location = New System.Drawing.Point(385, 66)
         Me.lblJobCount.Name = "lblJobCount"
         Me.lblJobCount.Size = New System.Drawing.Size(72, 17)
         Me.lblJobCount.TabIndex = 22
@@ -233,7 +233,7 @@ Partial Class Form1
         '
         Me.lblQuoteCount.AutoSize = True
         Me.lblQuoteCount.BackColor = System.Drawing.Color.Transparent
-        Me.lblQuoteCount.Location = New System.Drawing.Point(154, 57)
+        Me.lblQuoteCount.Location = New System.Drawing.Point(30, 66)
         Me.lblQuoteCount.Name = "lblQuoteCount"
         Me.lblQuoteCount.Size = New System.Drawing.Size(64, 17)
         Me.lblQuoteCount.TabIndex = 22

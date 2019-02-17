@@ -99,6 +99,9 @@
         Console.WriteLine("{0} Errors", z)
         Console.WriteLine("  t0:{0}, t5:{1}, i:{2}", t0, t5, i)
         Console.WriteLine("  Loaded {0} Quotes in {1} ms [{2}ms/qt]", i, t5 - t0, (t5 - t0) / i)
+
+        Dim etime As Double = t5 - t0
+        lblQuoteCount.Text = "Loaded & " & i & " Quotes in " & etime & " ms [" & Math.Round(etime / i, 2) & "ms/Job]"
     End Sub
 
     Private Sub LoadJobs(iCustID As Integer, sCustName As String)
@@ -165,6 +168,8 @@
         pStopWatch.Stop()
         Console.WriteLine("  t0:{0}, t3:{1}, i:{2}", t0, t3, i)
         Console.WriteLine("  Loaded {0} Jobs in {1} ms [{2}ms/Job]", i, t3 - t0, (t3 - t0) / j)
+        Dim etime As Double = t3 - t0
+        lblJobCount.Text = "Loaded & " & i & " Jobs in " & etime & " ms [" & Math.Round(etime / j, 2) & "ms/Job]"
     End Sub
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles Me.Load
 
