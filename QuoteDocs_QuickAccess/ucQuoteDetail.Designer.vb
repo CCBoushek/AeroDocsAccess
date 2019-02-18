@@ -96,9 +96,9 @@ Partial Class ucQuoteDetail
         Me.Controls.Add(Me.lbRefNum)
         Me.ForeColor = System.Drawing.SystemColors.ControlLight
         Me.Margin = New System.Windows.Forms.Padding(0, 2, 2, 0)
-        Me.MaximumSize = New System.Drawing.Size(350, 75)
+        Me.MaximumSize = New System.Drawing.Size(345, 80)
         Me.Name = "ucQuoteDetail"
-        Me.Size = New System.Drawing.Size(350, 53)
+        Me.Size = New System.Drawing.Size(345, 55)
         Me.RtClickMenu1.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout()

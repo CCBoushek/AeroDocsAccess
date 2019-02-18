@@ -58,7 +58,7 @@ Partial Class Form1
         Me.lblCust.AutoSize = True
         Me.lblCust.BackColor = System.Drawing.Color.Transparent
         Me.lblCust.Font = New System.Drawing.Font("Microsoft Sans Serif", 13.8!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblCust.Location = New System.Drawing.Point(57, 16)
+        Me.lblCust.Location = New System.Drawing.Point(93, 16)
         Me.lblCust.Name = "lblCust"
         Me.lblCust.Size = New System.Drawing.Size(123, 29)
         Me.lblCust.TabIndex = 1
@@ -85,10 +85,10 @@ Partial Class Form1
         Me.flpQuotes.BackColor = System.Drawing.SystemColors.ControlDarkDark
         Me.flpQuotes.FlowDirection = System.Windows.Forms.FlowDirection.TopDown
         Me.flpQuotes.Location = New System.Drawing.Point(0, 108)
-        Me.flpQuotes.MaximumSize = New System.Drawing.Size(373, 300)
-        Me.flpQuotes.MinimumSize = New System.Drawing.Size(373, 50)
+        Me.flpQuotes.MaximumSize = New System.Drawing.Size(378, 300)
+        Me.flpQuotes.MinimumSize = New System.Drawing.Size(378, 50)
         Me.flpQuotes.Name = "flpQuotes"
-        Me.flpQuotes.Size = New System.Drawing.Size(373, 50)
+        Me.flpQuotes.Size = New System.Drawing.Size(378, 50)
         Me.flpQuotes.TabIndex = 13
         Me.flpQuotes.Visible = False
         Me.flpQuotes.WrapContents = False
@@ -98,7 +98,7 @@ Partial Class Form1
         Me.PictureBox1.Image = Global.QuoteDocs_QuickAccess.My.Resources.Resources.Button_Background_MedDark
         Me.PictureBox1.Location = New System.Drawing.Point(0, 0)
         Me.PictureBox1.Name = "PictureBox1"
-        Me.PictureBox1.Size = New System.Drawing.Size(752, 127)
+        Me.PictureBox1.Size = New System.Drawing.Size(765, 127)
         Me.PictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
         Me.PictureBox1.TabIndex = 11
         Me.PictureBox1.TabStop = False
@@ -124,7 +124,7 @@ Partial Class Form1
         Me.cbOpenQuotes.AutoSize = True
         Me.cbOpenQuotes.BackColor = System.Drawing.Color.Transparent
         Me.cbOpenQuotes.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.cbOpenQuotes.Location = New System.Drawing.Point(90, 80)
+        Me.cbOpenQuotes.Location = New System.Drawing.Point(80, 45)
         Me.cbOpenQuotes.Name = "cbOpenQuotes"
         Me.cbOpenQuotes.Size = New System.Drawing.Size(71, 24)
         Me.cbOpenQuotes.TabIndex = 18
@@ -136,7 +136,7 @@ Partial Class Form1
         Me.cbJobQuotes.AutoSize = True
         Me.cbJobQuotes.BackColor = System.Drawing.Color.Transparent
         Me.cbJobQuotes.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.cbJobQuotes.Location = New System.Drawing.Point(167, 80)
+        Me.cbJobQuotes.Location = New System.Drawing.Point(167, 45)
         Me.cbJobQuotes.Name = "cbJobQuotes"
         Me.cbJobQuotes.Size = New System.Drawing.Size(58, 24)
         Me.cbJobQuotes.TabIndex = 18
@@ -148,7 +148,7 @@ Partial Class Form1
         Me.cbDeadQuotes.AutoSize = True
         Me.cbDeadQuotes.BackColor = System.Drawing.Color.Transparent
         Me.cbDeadQuotes.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.cbDeadQuotes.Location = New System.Drawing.Point(234, 80)
+        Me.cbDeadQuotes.Location = New System.Drawing.Point(239, 45)
         Me.cbDeadQuotes.Margin = New System.Windows.Forms.Padding(0)
         Me.cbDeadQuotes.Name = "cbDeadQuotes"
         Me.cbDeadQuotes.Size = New System.Drawing.Size(71, 24)
@@ -161,7 +161,7 @@ Partial Class Form1
         Me.cbClosedJobs.AutoSize = True
         Me.cbClosedJobs.BackColor = System.Drawing.Color.Transparent
         Me.cbClosedJobs.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.cbClosedJobs.Location = New System.Drawing.Point(525, 80)
+        Me.cbClosedJobs.Location = New System.Drawing.Point(533, 45)
         Me.cbClosedJobs.Margin = New System.Windows.Forms.Padding(0)
         Me.cbClosedJobs.Name = "cbClosedJobs"
         Me.cbClosedJobs.Size = New System.Drawing.Size(83, 24)
@@ -176,11 +176,11 @@ Partial Class Form1
         Me.flpJobs.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
         Me.flpJobs.BackColor = System.Drawing.SystemColors.ControlDarkDark
         Me.flpJobs.FlowDirection = System.Windows.Forms.FlowDirection.TopDown
-        Me.flpJobs.Location = New System.Drawing.Point(379, 108)
-        Me.flpJobs.MaximumSize = New System.Drawing.Size(373, 300)
-        Me.flpJobs.MinimumSize = New System.Drawing.Size(373, 50)
+        Me.flpJobs.Location = New System.Drawing.Point(385, 108)
+        Me.flpJobs.MaximumSize = New System.Drawing.Size(378, 300)
+        Me.flpJobs.MinimumSize = New System.Drawing.Size(378, 50)
         Me.flpJobs.Name = "flpJobs"
-        Me.flpJobs.Size = New System.Drawing.Size(373, 50)
+        Me.flpJobs.Size = New System.Drawing.Size(378, 50)
         Me.flpJobs.TabIndex = 14
         Me.flpJobs.Visible = False
         Me.flpJobs.WrapContents = False
@@ -190,7 +190,7 @@ Partial Class Form1
         Me.cbOpenJobs.AutoSize = True
         Me.cbOpenJobs.BackColor = System.Drawing.Color.Transparent
         Me.cbOpenJobs.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.cbOpenJobs.Location = New System.Drawing.Point(446, 80)
+        Me.cbOpenJobs.Location = New System.Drawing.Point(446, 45)
         Me.cbOpenJobs.Name = "cbOpenJobs"
         Me.cbOpenJobs.Size = New System.Drawing.Size(71, 24)
         Me.cbOpenJobs.TabIndex = 18
@@ -202,7 +202,7 @@ Partial Class Form1
         Me.lblQuoteNum.AutoSize = True
         Me.lblQuoteNum.BackColor = System.Drawing.Color.Transparent
         Me.lblQuoteNum.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblQuoteNum.Location = New System.Drawing.Point(56, 41)
+        Me.lblQuoteNum.Location = New System.Drawing.Point(56, 65)
         Me.lblQuoteNum.Name = "lblQuoteNum"
         Me.lblQuoteNum.Size = New System.Drawing.Size(88, 25)
         Me.lblQuoteNum.TabIndex = 1
@@ -213,7 +213,7 @@ Partial Class Form1
         Me.lblJobNum.AutoSize = True
         Me.lblJobNum.BackColor = System.Drawing.Color.Transparent
         Me.lblJobNum.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblJobNum.Location = New System.Drawing.Point(391, 41)
+        Me.lblJobNum.Location = New System.Drawing.Point(391, 65)
         Me.lblJobNum.Name = "lblJobNum"
         Me.lblJobNum.Size = New System.Drawing.Size(67, 25)
         Me.lblJobNum.TabIndex = 1
@@ -223,7 +223,7 @@ Partial Class Form1
         '
         Me.lblJobCount.AutoSize = True
         Me.lblJobCount.BackColor = System.Drawing.Color.Transparent
-        Me.lblJobCount.Location = New System.Drawing.Point(385, 66)
+        Me.lblJobCount.Location = New System.Drawing.Point(392, 88)
         Me.lblJobCount.Name = "lblJobCount"
         Me.lblJobCount.Size = New System.Drawing.Size(72, 17)
         Me.lblJobCount.TabIndex = 22
@@ -233,7 +233,7 @@ Partial Class Form1
         '
         Me.lblQuoteCount.AutoSize = True
         Me.lblQuoteCount.BackColor = System.Drawing.Color.Transparent
-        Me.lblQuoteCount.Location = New System.Drawing.Point(30, 66)
+        Me.lblQuoteCount.Location = New System.Drawing.Point(37, 88)
         Me.lblQuoteCount.Name = "lblQuoteCount"
         Me.lblQuoteCount.Size = New System.Drawing.Size(64, 17)
         Me.lblQuoteCount.TabIndex = 22
@@ -246,7 +246,7 @@ Partial Class Form1
         Me.AutoSize = True
         Me.BackColor = System.Drawing.Color.DarkGray
         Me.CancelButton = Me.btClose
-        Me.ClientSize = New System.Drawing.Size(752, 132)
+        Me.ClientSize = New System.Drawing.Size(765, 132)
         Me.Controls.Add(Me.lbCustSelect)
         Me.Controls.Add(Me.lblQuoteCount)
         Me.Controls.Add(Me.lblJobCount)
