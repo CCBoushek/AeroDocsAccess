@@ -34,7 +34,7 @@ Partial Class ucQuoteDetail
         '
         'lbRefNum
         '
-        Me.lbRefNum.Font = New System.Drawing.Font("Microsoft Sans Serif", 13.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lbRefNum.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lbRefNum.ForeColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
         Me.lbRefNum.Location = New System.Drawing.Point(0, 5)
         Me.lbRefNum.Name = "lbRefNum"
@@ -46,7 +46,7 @@ Partial Class ucQuoteDetail
         '
         Me.lbCustName.Font = New System.Drawing.Font("Microsoft Sans Serif", 13.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lbCustName.ForeColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
-        Me.lbCustName.Location = New System.Drawing.Point(150, 5)
+        Me.lbCustName.Location = New System.Drawing.Point(150, 4)
         Me.lbCustName.Name = "lbCustName"
         Me.lbCustName.Size = New System.Drawing.Size(200, 27)
         Me.lbCustName.TabIndex = 0
@@ -57,7 +57,7 @@ Partial Class ucQuoteDetail
         Me.lbDesc.AutoSize = True
         Me.lbDesc.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lbDesc.ForeColor = System.Drawing.Color.Silver
-        Me.lbDesc.Location = New System.Drawing.Point(0, 30)
+        Me.lbDesc.Location = New System.Drawing.Point(0, 32)
         Me.lbDesc.MaximumSize = New System.Drawing.Size(350, 50)
         Me.lbDesc.Name = "lbDesc"
         Me.lbDesc.Padding = New System.Windows.Forms.Padding(0, 0, 0, 3)
@@ -98,7 +98,7 @@ Partial Class ucQuoteDetail
         Me.Margin = New System.Windows.Forms.Padding(0, 2, 2, 0)
         Me.MaximumSize = New System.Drawing.Size(350, 75)
         Me.Name = "ucQuoteDetail"
-        Me.Size = New System.Drawing.Size(350, 51)
+        Me.Size = New System.Drawing.Size(350, 53)
         Me.RtClickMenu1.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout()
