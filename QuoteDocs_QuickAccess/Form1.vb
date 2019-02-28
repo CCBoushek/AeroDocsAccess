@@ -53,9 +53,10 @@
         lblQuoteCount.Text = "Quote Count: " & dtQuotes.Rows.Count
         Dim i As Integer
         Dim z As Integer
+        Dim Qt_Count As Integer = 0
         For i = 0 To dtQuotes.Rows.Count - 1
             Dim qt As New ucQuoteDetail
-
+            Qt_Count += 1
             With dtQuotes.Rows(i)
                 'Search the data rows array for each quote and assign status
                 sSelExpression = "a.Q_QUOTE = '" & .Item("QTnum") & "'"
@@ -101,7 +102,7 @@
         Console.WriteLine("  Loaded {0} Quotes in {1} ms [{2}ms/qt]", i, t5 - t0, (t5 - t0) / i)
 
         Dim etime As Double = t5 - t0
-        lblQuoteCount.Text = "Loaded & " & i & " Quotes in " & etime & " ms [" & Math.Round(etime / i, 2) & "ms/Job]"
+        lblQuoteCount.Text = "Loaded & " & Qt_Count & " Quotes in " & etime & " ms [" & Math.Round(etime / Qt_Count, 2) & "ms/Job]"
     End Sub
 
     Private Sub LoadJobs(iCustID As Integer, sCustName As String)
@@ -122,9 +123,11 @@
         j = dtJobs.Rows.Count - 1
         Dim i As Integer
         Dim J_JOB As Integer
+        Dim Job_Count As Integer = 0
         If j > 0 Then
             Dim qt As ucQuoteDetail
             For i = 0 To j - 1
+                Job_Count = Job_Count + 1
                 With dtJobs.Rows(i)
                     qt = New ucQuoteDetail
                     'Debug.Print("Status: " & .Item("j_status"))
@@ -157,19 +160,21 @@
                     End If
                     i = i + 1
                 Loop
+                'Need to undo the last increment to i since row(i) now no longer matches the current job.
+                'the 'Next' in the loop will autoincrement i again.
+                i = i - 1
                 If ShowJob(qt) Then qt.Show() Else qt.Hide()
                 flpJobs.Controls.Add(qt)
             Next
         Else
             'no records found
         End If
-        lblJobCount.Text = "Job Count: " & j
         Dim t3 As Double = pStopWatch.ElapsedMilliseconds
         pStopWatch.Stop()
         Console.WriteLine("  t0:{0}, t3:{1}, i:{2}", t0, t3, i)
         Console.WriteLine("  Loaded {0} Jobs in {1} ms [{2}ms/Job]", i, t3 - t0, (t3 - t0) / j)
         Dim etime As Double = t3 - t0
-        lblJobCount.Text = "Loaded & " & i & " Jobs in " & etime & " ms [" & Math.Round(etime / j, 2) & "ms/Job]"
+        lblJobCount.Text = "Loaded & " & Job_Count & " Jobs in " & etime & " ms [" & Math.Round(etime / Job_Count, 2) & "ms/Job]"
     End Sub
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles Me.Load
 
