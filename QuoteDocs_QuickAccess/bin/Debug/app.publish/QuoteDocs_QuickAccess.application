@@ -7,7 +7,7 @@
     <framework targetVersion="4.5.2" profile="Full" supportedRuntime="4.0.30319" />
   </compatibleFrameworks>
   <dependency>
-    <dependentAssembly dependencyType="install" codebase="QuoteDocs_QuickAccess.exe.manifest" size="4977">
+    <dependentAssembly dependencyType="install" codebase="Application Files\QuoteDocs_QuickAccess_1_0_0_22\QuoteDocs_QuickAccess.exe.manifest" size="4977">
       <assemblyIdentity name="QuoteDocs_QuickAccess.exe" version="1.0.0.22" publicKeyToken="0000000000000000" language="neutral" processorArchitecture="msil" type="win32" />
       <hash>
         <dsig:Transforms>
