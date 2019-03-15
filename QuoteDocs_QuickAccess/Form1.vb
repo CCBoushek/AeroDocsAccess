@@ -23,6 +23,15 @@
     'Started rev 2 of the job folders so Jobs are searched independantly and allowed to open without an associated quote 9/26/18
     'Also, Should be able to filter/choose to show or not Dead Quotes and Job Quotes <-- done a while ago
 
+
+    '++++++ Version History +++++++
+    'v4.0.1 --> Fixed loop issue on Loading Jobs.
+    '         Customers with only 1 job and 1 PO on that job would cause an uncaught error and would not show that job at all. 
+
+
+
+
+
     Private Sub LoadQuotes(iCustID As Integer, sCustName As String)
         Console.WriteLine("Loading Quotes")
         pStopWatch.Reset()
@@ -120,11 +129,11 @@
         Dim t2 As Double = pStopWatch.ElapsedMilliseconds
         Console.WriteLine("  Fill Datatable took {0}ms", t2 - t1)
         Dim j As Integer
-        j = dtJobs.Rows.Count - 1
+        j = dtJobs.Rows.Count
         Dim i As Integer
         Dim J_JOB As Integer
         Dim Job_Count As Integer = 0
-        If j > 0 Then
+        If j > 0 Then 'j=0 actually means (1) job was returned see above where j is set.
             Dim qt As ucQuoteDetail
             For i = 0 To j - 1
                 Job_Count = Job_Count + 1
@@ -153,12 +162,17 @@
                     qt.CustName = sCustName
                 End With
 
-                Do Until dtJobs.Rows(i).Item("J_JOB") <> J_JOB Or i = j
+                Do While dtJobs.Rows(i).Item("J_JOB") = J_JOB And i <= j - 1
                     If Not IsDBNull(dtJobs.Rows(i).Item("PO_NUMBER")) And Not IsDBNull(dtJobs.Rows(i).Item("V_NAME")) Then
                         'Add PO's to the detail for the right click menu function
                         qt.ADD_PO(dtJobs.Rows(i).Item("PO_NUMBER"), dtJobs.Rows(i).Item("V_NAME"))
                     End If
+
                     i = i + 1
+
+                    If i = j Then
+                        Exit Do
+                    End If
                 Loop
                 'Need to undo the last increment to i since row(i) now no longer matches the current job.
                 'the 'Next' in the loop will autoincrement i again.
