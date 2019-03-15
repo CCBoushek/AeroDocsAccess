@@ -250,7 +250,7 @@ Partial Class Form1
         Me.lblRevision.Name = "lblRevision"
         Me.lblRevision.Size = New System.Drawing.Size(39, 15)
         Me.lblRevision.TabIndex = 23
-        Me.lblRevision.Text = "v4.0.0"
+        Me.lblRevision.Text = "v4.0.2"
         '
         'Form1
         '
