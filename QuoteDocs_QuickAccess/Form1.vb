@@ -194,6 +194,7 @@
         cbClosedJobs.Parent = PictureBox1
         lblJobCount.Parent = PictureBox1
         lblQuoteCount.Parent = PictureBox1
+        lblRevision.Parent = PictureBox1
         'FlowLayoutPanel1.Parent = PictureBox1
         KeyPreview = True
         tbCust.Select()

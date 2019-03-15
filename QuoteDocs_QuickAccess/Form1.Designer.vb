@@ -39,6 +39,7 @@ Partial Class Form1
         Me.lblJobNum = New System.Windows.Forms.Label()
         Me.lblJobCount = New System.Windows.Forms.Label()
         Me.lblQuoteCount = New System.Windows.Forms.Label()
+        Me.lblRevision = New System.Windows.Forms.Label()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -239,6 +240,18 @@ Partial Class Form1
         Me.lblQuoteCount.TabIndex = 22
         Me.lblQuoteCount.Text = "Qt Count"
         '
+        'lblRevision
+        '
+        Me.lblRevision.AutoSize = True
+        Me.lblRevision.BackColor = System.Drawing.Color.Transparent
+        Me.lblRevision.Font = New System.Drawing.Font("Microsoft Sans Serif", 7.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblRevision.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
+        Me.lblRevision.Location = New System.Drawing.Point(678, 14)
+        Me.lblRevision.Name = "lblRevision"
+        Me.lblRevision.Size = New System.Drawing.Size(39, 15)
+        Me.lblRevision.TabIndex = 23
+        Me.lblRevision.Text = "v4.0.0"
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
@@ -247,6 +260,7 @@ Partial Class Form1
         Me.BackColor = System.Drawing.Color.DarkGray
         Me.CancelButton = Me.btClose
         Me.ClientSize = New System.Drawing.Size(765, 132)
+        Me.Controls.Add(Me.lblRevision)
         Me.Controls.Add(Me.lbCustSelect)
         Me.Controls.Add(Me.lblQuoteCount)
         Me.Controls.Add(Me.lblJobCount)
@@ -291,4 +305,5 @@ Partial Class Form1
     Friend WithEvents lblJobNum As Label
     Friend WithEvents lblJobCount As Label
     Friend WithEvents lblQuoteCount As Label
+    Friend WithEvents lblRevision As Label
 End Class
