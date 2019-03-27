@@ -29,7 +29,7 @@
     'v4.0.1 --> Fixed loop issue on Loading Jobs.
     '         Customers with only 1 job and 1 PO on that job would cause an uncaught error and would not show that job at all. 
     'v4.0.2 --> Updated Version label on form (forgot to on v4.0.1... no other changes)
-
+    'v4.0.3 --> Changed to only load top 50 jobs/quotes to keep from stalling so bad when loading customers with lots of history.
 
 
 
@@ -64,7 +64,9 @@
         Dim i As Integer
         Dim z As Integer
         Dim Qt_Count As Integer = 0
-        For i = 0 To dtQuotes.Rows.Count - 1
+        'rows_to_load prevents from loading tons of old quotes
+        Dim rows_to_Load As Integer = Math.Min(dtQuotes.Rows.Count - 1, 24)
+        For i = 0 To rows_to_Load
             Dim qt As New ucQuoteDetail
             Qt_Count += 1
             With dtQuotes.Rows(i)
@@ -122,7 +124,8 @@
         Dim t0 As Double = pStopWatch.ElapsedMilliseconds
         'AND j_entdate >= #" & DateTime.Now.AddDays(-730).ToString("MM/dd/yyy") & "# 
         'Dim SQL As String = "SELECT * FROM JOB WHERE c_customer = " & iCustID & " ORDER BY j_job DESC"
-        Dim SQL As String = "SELECT a.*, PO_NUMBER, V_NAME FROM ((JOB a LEFT JOIN PO b ON a.J_JOB = b.J_JOB) LEFT JOIN VENDOR c On b.V_VENDOR = c.V_VENDOR) WHERE a.c_customer = " & iCustID & " ORDER BY a.J_JOB DESC, PO_NUMBER ASC"
+        'This SQL limits the amount of jobs returned to 50 so we dont unnecessarily load really old jobs and bogg everything down.
+        Dim SQL As String = "SELECT a.*, PO_NUMBER, V_NAME FROM (((SELECT TOP 50 * FROM JOB WHERE c_customer = " & iCustID & " ORDER BY J_JOB DESC) a LEFT JOIN PO b ON a.J_JOB = b.J_JOB) LEFT JOIN VENDOR c On b.V_VENDOR = c.V_VENDOR) ORDER BY PO_NUMBER ASC"
         AeroDBcon.RunQuery(SQL)
         Dim t1 As Double = pStopWatch.ElapsedMilliseconds
         Console.WriteLine("  DBF Query took {0}ms", t1 - t0)
@@ -134,9 +137,10 @@
         Dim i As Integer
         Dim J_JOB As Integer
         Dim Job_Count As Integer = 0
+        Dim jobs_to_load As Integer = j - 1
         If j > 0 Then 'j=0 actually means (1) job was returned see above where j is set.
             Dim qt As ucQuoteDetail
-            For i = 0 To j - 1
+            For i = 0 To jobs_to_load
                 Job_Count = Job_Count + 1
                 With dtJobs.Rows(i)
                     qt = New ucQuoteDetail
