@@ -30,7 +30,7 @@
     '         Customers with only 1 job and 1 PO on that job would cause an uncaught error and would not show that job at all. 
     'v4.0.2 --> Updated Version label on form (forgot to on v4.0.1... no other changes)
     'v4.0.3 --> Changed to only load top 50 jobs/quotes to keep from stalling so bad when loading customers with lots of history.
-
+    'v4.0.4 --> Added a SORT BY in the nested select for jobs to show in order of jobs
 
 
     Private Sub LoadQuotes(iCustID As Integer, sCustName As String)
@@ -125,7 +125,7 @@
         'AND j_entdate >= #" & DateTime.Now.AddDays(-730).ToString("MM/dd/yyy") & "# 
         'Dim SQL As String = "SELECT * FROM JOB WHERE c_customer = " & iCustID & " ORDER BY j_job DESC"
         'This SQL limits the amount of jobs returned to 50 so we dont unnecessarily load really old jobs and bogg everything down.
-        Dim SQL As String = "SELECT a.*, PO_NUMBER, V_NAME FROM (((SELECT TOP 50 * FROM JOB WHERE c_customer = " & iCustID & " ORDER BY J_JOB DESC) a LEFT JOIN PO b ON a.J_JOB = b.J_JOB) LEFT JOIN VENDOR c On b.V_VENDOR = c.V_VENDOR) ORDER BY PO_NUMBER ASC"
+        Dim SQL As String = "SELECT a.*, PO_NUMBER, V_NAME FROM (((SELECT TOP 50 * FROM JOB WHERE c_customer = " & iCustID & " ORDER BY J_JOB DESC) a LEFT JOIN PO b ON a.J_JOB = b.J_JOB) LEFT JOIN VENDOR c On b.V_VENDOR = c.V_VENDOR) ORDER BY a.J_JOB DESC, PO_NUMBER ASC"
         AeroDBcon.RunQuery(SQL)
         Dim t1 As Double = pStopWatch.ElapsedMilliseconds
         Console.WriteLine("  DBF Query took {0}ms", t1 - t0)
