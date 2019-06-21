@@ -56,7 +56,7 @@
             'poNum is taken from the name (.Name) of the menu item
             Dim poNum As Integer = sender.Name
             Debug.Print(poNum.ToString)
-            Dim sPath As String = "Z:\CLOUD STORAGE\JOB FILES\JOBS\" & JobNum.ToString & "\2 - PURCHASE ORDERS\" & poNum.ToString
+            Dim sPath As String = "Z:\DATA\JOBS\" & JobNum.ToString & "\2 - PURCHASE ORDERS\" & poNum.ToString
             Debug.Print(sPath)
             Process.Start(sPath)
         Catch ex As Exception
@@ -159,11 +159,11 @@
         Try
             Dim strPath As String
             If QuoteOrJob = DetailType.Job Then
-                strPath = "Z:\CLOUD STORAGE\JOB FILES\JOBS\"
+                strPath = "Z:\DATA\JOBS\"
                 strPath += JobNum & "\"
                 Process.Start(strPath)
             ElseIf QuoteOrJob = DetailType.Quote Then
-                strPath = "Z:\CLOUD STORAGE\QUOTES\"
+                strPath = "Z:\DATA\QUOTES\"
                 Select Case qType
                     Case qtType.Part
                         strPath += "PARTS\"
@@ -181,7 +181,7 @@
 
     Private Sub Open_Quote_Folder(sender As Object, e As EventArgs) Handles OpenQtFldr_ContextMenuItem.Click
         Try
-            Dim strPath As String = "Z:\CLOUD STORAGE\QUOTES\"
+            Dim strPath As String = "Z:\DATA\QUOTES\"
             Select Case qType
                 Case qtType.Part
                     strPath += "PARTS\"
@@ -196,7 +196,7 @@
 
     End Sub
     Private Sub OpenORCreate_Quote_Sent_Folder(sender As Object, e As EventArgs) Handles Me.Click, lbRefNum.Click, lbDesc.Click, lbCustName.Click
-        Dim strPath As String = "Z:\CLOUD STORAGE\QUOTES\"
+        Dim strPath As String = "Z:\DATA\QUOTES\"
         Select Case qType
             Case qtType.Part
                 strPath += "PARTS\"
@@ -235,7 +235,7 @@
     End Sub
     Private Sub Open_Job_Folder(sender As Object, e As EventArgs) Handles menuJobFolder.Click
         Try
-            Dim strPath As String = "Z:\CLOUD STORAGE\JOB FILES\JOBS\"
+            Dim strPath As String = "Z:\DATA\JOBS\"
             'find job(s) related to that quote
             Dim AeroDBConn As New AeroDBConnection
             Dim SQL As String = "SELECT j_job FROM QUOTE WHERE q_quote = '" & QtNumValue & "'"

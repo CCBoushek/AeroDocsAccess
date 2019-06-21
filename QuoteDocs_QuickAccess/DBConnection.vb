@@ -4,7 +4,7 @@ Imports System.Data.OleDb
 Public Class DBConnection
     'DATABASE CONNECTION
     Private DBcon As New OleDbConnection("Provider=Microsoft.ACE.OLEDB.12.0;" &
-                                        "Data Source=Z:\CLOUD STORAGE\PROGRAMS\QuotesDB.accdb;" &
+                                        "Data Source=Z:\PROGRAMS\QuotesDB.accdb;" &
                                         "Persist Security Info=false;")
     Private DBcmd As OleDbCommand
 
