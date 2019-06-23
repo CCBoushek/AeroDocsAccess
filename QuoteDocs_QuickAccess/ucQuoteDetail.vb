@@ -254,4 +254,10 @@
             MsgBox(ex.Message)
         End Try
     End Sub
+
+    Private Sub ucQuoteDetail_MouseDown(sender As Object, e As MouseEventArgs) Handles Me.MouseDown, lbCustName.MouseDown, lbDesc.MouseDown, lbRefNum.MouseDown
+        If e.Button = MouseButtons.Right Then
+            Debug.Print("Right Mouse Button Clicked on " & sender.ToString)
+        End If
+    End Sub
 End Class

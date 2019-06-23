@@ -37,7 +37,7 @@ Public Class DBConnection
             DBds.Clear()
             DBda = New OleDbDataAdapter(DBcmd)
             RecordCount = DBda.Fill(DBds, "DB_Data")
-
+            Debug.Print("ACCDB Query: '" & Query & "' @ " & DateTime.Now.ToString("mm:ss.fff"))
             DBcon.Close()
         Catch ex As Exception
             'CAPTURE ERRORS
