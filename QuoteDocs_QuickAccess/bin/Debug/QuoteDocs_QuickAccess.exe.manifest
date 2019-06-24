@@ -43,14 +43,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="QuoteDocs_QuickAccess.exe" size="617472">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="QuoteDocs_QuickAccess.exe" size="618496">
       <assemblyIdentity name="QuoteDocs_QuickAccess" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>W0PxwSC5wxaAjirPnaavhlneU4AaMShqiYh5Bk1LlEk=</dsig:DigestValue>
+        <dsig:DigestValue>FyAE84xwDvks+H6wyvM1E4xJ/udI038lVefbATXALDc=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

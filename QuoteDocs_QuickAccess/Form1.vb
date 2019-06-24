@@ -31,6 +31,8 @@
     'v4.0.2 --> Updated Version label on form (forgot to on v4.0.1... no other changes)
     'v4.0.3 --> Changed to only load top 50 jobs/quotes to keep from stalling so bad when loading customers with lots of history.
     'v4.0.4 --> Added a SORT BY in the nested select for jobs to show in order of jobs
+    'v4.0.5 --> Added some debugging and testing code to help with adding PO re-searching on right click on qtDetail 6/23/19
+    'v4.1.0 --> Added right click on qtDetail to reload PO's functionality 6/23/19
 
 
     Private Sub LoadQuotes(iCustID As Integer, sCustName As String)
@@ -167,6 +169,7 @@
                     qt.CustName = sCustName
                 End With
 
+                'scroll through dtJobs until you get to the next job. There will be a line in the table for each PO that exists.
                 Do While dtJobs.Rows(i).Item("J_JOB") = J_JOB And i <= j - 1
                     If Not IsDBNull(dtJobs.Rows(i).Item("PO_NUMBER")) And Not IsDBNull(dtJobs.Rows(i).Item("V_NAME")) Then
                         'Add PO's to the detail for the right click menu function

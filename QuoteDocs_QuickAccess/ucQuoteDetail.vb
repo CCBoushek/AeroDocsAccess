@@ -1,4 +1,5 @@
 ﻿Public Class ucQuoteDetail
+    Private AeroDBcon As New AeroDBConnection
     Private QtNumValue As String
     Private DescValue As String
     Private CustNumValue As String
@@ -256,8 +257,42 @@
     End Sub
 
     Private Sub ucQuoteDetail_MouseDown(sender As Object, e As MouseEventArgs) Handles Me.MouseDown, lbCustName.MouseDown, lbDesc.MouseDown, lbRefNum.MouseDown
+        Debug.Print("Right Mouse Button Clicked on " & sender.ToString)
+        Console.WriteLine("Loading PO's")
+        Dim pStopwatch As New Stopwatch
+        pStopwatch.Reset()
+        pStopwatch.Start()
+        Dim t0 As Double = pStopwatch.Elapsed.TotalMilliseconds
+
         If e.Button = MouseButtons.Right Then
-            Debug.Print("Right Mouse Button Clicked on " & sender.ToString)
+            'Clear the PO's that were already loaded so you dont duplicate
+            menuJobFolder.DropDownItems.Clear()
+
+            'Query Database for all PO's
+            '(this could be simplified to just look at the PO and vendor folder i suppose)
+            Dim SQL As String = "SELECT a.*, PO_NUMBER, V_NAME FROM (((SELECT * FROM JOB WHERE J_JOB = " & JobNum & ") a LEFT JOIN PO b ON a.J_JOB = b.J_JOB) LEFT JOIN VENDOR c On b.V_VENDOR = c.V_VENDOR) ORDER BY PO_NUMBER ASC"
+            AeroDBcon.RunQuery(SQL)
+            Dim t1 As Double = pStopwatch.Elapsed.TotalMilliseconds
+            Console.WriteLine("  DBF Query took {0}ms", Math.Round(t1 - t0, 2))
+
+            'Load search results into memory/datatable
+            Dim dtPOs As New DataTable
+            dtPOs = AeroDBcon.DBds.Tables(0)
+
+            Dim i As Integer = 0
+            Dim j As Integer = dtPOs.Rows.Count - 1
+
+            Do While i <= j
+                If Not IsDBNull(dtPOs.Rows(i).Item("PO_NUMBER")) And Not IsDBNull(dtPOs.Rows(i).Item("V_NAME")) Then
+                    'Add PO's to the detail for the right click menu function
+                    ADD_PO(dtPOs.Rows(i).Item("PO_NUMBER"), dtPOs.Rows(i).Item("V_NAME"))
+                End If
+
+                i = i + 1
+            Loop
+            Dim t2 As Double = pStopwatch.Elapsed.TotalMilliseconds
+            pStopwatch.Stop()
+            Console.WriteLine("  Creating PO's took {0}ms", Math.Round(t2 - t1, 3))
         End If
     End Sub
 End Class
