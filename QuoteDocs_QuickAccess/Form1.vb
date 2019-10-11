@@ -19,6 +19,11 @@
     Public pStopWatch As New Stopwatch
     Dim X, Y As Integer
     Dim NewPoint As New System.Drawing.Point
+
+    Private Customers As IEnumerable(Of Customer)
+    Private ReadOnly querytimer As New System.Threading.Timer(AddressOf executeQuery, Nothing, -1, -1)
+    Private ReadOnly keyPressDelay As Integer = 100
+    Private filterString As String = ""
     'This should/could be updated to show Jobs and be able to open the electronic job file/Folder When we start doing that. <-- Started 9/26/18... finished rev 1 on 9/26/18 which allows you to open jobs that are associated with a quote.
     'Started rev 2 of the job folders so Jobs are searched independantly and allowed to open without an associated quote 9/26/18
     'Also, Should be able to filter/choose to show or not Dead Quotes and Job Quotes <-- done a while ago
@@ -119,6 +124,7 @@
         lblQuoteCount.Text = "Loaded & " & Qt_Count & " Quotes in " & etime & " ms [" & Math.Round(etime / Qt_Count, 2) & "ms/Job]"
     End Sub
 
+
     Private Sub LoadJobs(iCustID As Integer, sCustName As String)
         Console.WriteLine("Loading Jobs")
         pStopWatch.Reset()
@@ -199,6 +205,8 @@
         lblJobCount.Text = "Loaded & " & Job_Count & " Jobs in " & etime & " ms [" & Math.Round(etime / Job_Count, 2) & "ms/Job]"
     End Sub
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles Me.Load
+        'Allow drag and drop on form
+        Me.AllowDrop = True
 
         'The form would resize the first time the Database Connection was opened so i just put this here so it resizes right away and the user doens't have to see it large and then go small.
         Dim initializerDBcon As New DBConnection
@@ -224,10 +232,22 @@
         cbOpenJobs.Checked = True
         lbCustSelect.AutoSize = True 'There is no AutoSize option to check in Properties in the designer for some reason so you have to set it here.
 
+        'Loads customer collection to be searched and displayed in listbox
+        If Customers Is Nothing Then
+            Dim sql = "SELECT C_CUSTOMER as ID, C_SHIPNAME as Name FROM CUSTOMER"
+            AeroDBcon.RunQuery(sql)
+            Customers =
+                AeroDBcon.DBds.Tables(0).
+                AsEnumerable().Select(Function(dr) New Customer With {.ID = dr("ID").ToString(), .name = dr("Name").ToString()})
+            Debug.Print("Customer List Loaded")
+        End If
+
         flpQuotes.Show()
         flpJobs.Show()
         Debug.Print(flpQuotes.Controls.Count)
     End Sub
+
+
     Private Function ValidResponse(DBValue As Object) As String
         If Not IsDBNull(DBValue) Then
             Return DBValue
@@ -243,6 +263,20 @@
         X = Control.MousePosition.X - Me.Location.X
         Y = Control.MousePosition.Y - Me.Location.Y
     End Sub
+    Private Sub Form1_DragDrop(sender As System.Object, e As System.Windows.Forms.DragEventArgs) Handles Me.DragDrop
+        'here for source of this code "https://stackoverflow.com/questions/11686631/vb-net-drag-drop-and-get-file-path"
+        'See here for email handling "https://www.emoreau.com/Entries/Articles/2016/04/Drag--Drop-emails-on-a-Net-application-from-Outlook-with-attachments.aspx"
+        Dim files() As String = e.Data.GetData(DataFormats.FileDrop)
+        For Each path In files
+            MsgBox(path)
+        Next
+    End Sub
+
+    Private Sub Form1_DragEnter(sender As System.Object, e As System.Windows.Forms.DragEventArgs) Handles Me.DragEnter
+        If e.Data.GetDataPresent(DataFormats.FileDrop) Then
+            e.Effect = DragDropEffects.Move
+        End If
+    End Sub
 
     Private Sub Form1_MouseMove(sender As Object, e As MouseEventArgs) Handles PictureBox1.MouseMove, lblCust.MouseMove, lblJobNum.MouseMove, lblQuoteNum.MouseMove
         If e.Button = MouseButtons.Left Then
@@ -252,8 +286,12 @@
             Me.Location = NewPoint
         End If
     End Sub
-
     Private Sub tbCust_TextChanged(sender As Object, e As EventArgs) Handles tbCust.TextChanged
+        filterString = tbCust.Text
+        lbCustSelect.Visible = filterString.Length > 0
+        If filterString.Length > 0 Then querytimer.Change(keyPressDelay, -1)
+    End Sub
+    Private Sub tbCust_TextChanged_(sender As Object, e As EventArgs)
         'This populated the Customer Selection list box with customers whose names start with the
         'string of letters in the customer name text box.
 
@@ -265,13 +303,15 @@
         If tbCust.TextLength > 0 Then
             lbCustSelect.Visible = True
             Dim SQL As String
-            SQL = "SELECT C_CUSTOMER as ID, C_SHIPNAME as Name FROM CUSTOMER WHERE LEFT(C_SHIPNAME," & tbCust.TextLength & ") ='" & tbCust.Text & "'"
+            SQL = "SELECT C_CUSTOMER as ID, C_SHIPNAME as Name FROM CUSTOMER WHERE C_SHIPNAME LIKE '%" & tbCust.Text & "%' ORDER BY C_SHIPNAME ASC"
             'Debug.Print(SQL)
             AeroDBcon.RunQuery(SQL)
             dtCustomers = AeroDBcon.DBds.Tables(0)
-            lbCustSelect.DataSource = dtCustomers
+
+            lbCustSelect.DataSource = Nothing
             lbCustSelect.DisplayMember = "Name"
             lbCustSelect.ValueMember = "ID"
+            lbCustSelect.DataSource = dtCustomers
             If dtCustomers.Rows.Count = 0 Then
                 lbCustSelect.Visible = False
             End If
@@ -279,6 +319,21 @@
             'if there is no text in the customer name text box, hide the listbox
             lbCustSelect.Visible = False
         End If
+    End Sub
+
+    Private Sub executeQuery(state As Object)
+
+        'Dim filteredCustomers = Customers.Where(Function(c) c.name.StartsWith(filterString)).ToList()
+        Dim filteredCustomers = Customers.Where(Function(c) c.name.Contains(filterString)).ToList()
+
+        ' update the control on the UI thread
+        lbCustSelect.Invoke(
+            Sub()
+                lbCustSelect.DataSource = Nothing
+                lbCustSelect.DisplayMember = "Name"
+                lbCustSelect.ValueMember = "ID"
+                lbCustSelect.DataSource = filteredCustomers
+            End Sub)
     End Sub
 
     Private Sub tbCust_KeyDown(sender As Object, e As KeyEventArgs) Handles tbCust.KeyDown
