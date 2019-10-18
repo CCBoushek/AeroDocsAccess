@@ -24,7 +24,11 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
+<<<<<<< HEAD
     <ApplicationRevision>28</ApplicationRevision>
+=======
+    <ApplicationRevision>30</ApplicationRevision>
+>>>>>>> cust_filter_on_selction_and_dragdrop
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -107,6 +111,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AeroDBConnection.vb" />
+    <Compile Include="Customer.vb" />
     <Compile Include="DBConnection.vb" />
     <Compile Include="Form1.vb">
       <SubType>Form</SubType>
