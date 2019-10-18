@@ -38,7 +38,8 @@
     'v4.0.4 --> Added a SORT BY in the nested select for jobs to show in order of jobs
     'v4.0.5 --> Added some debugging and testing code to help with adding PO re-searching on right click on qtDetail 6/23/19
     'v4.1.0 --> Added right click on qtDetail to reload PO's functionality 6/23/19
-
+    'v4.1.1 --> Added preliminary drag/drop functionality strictly for testing - non functional
+    '          changed how filtering customer is done when typing customer name in tbcust. Much faster now.
 
     Private Sub LoadQuotes(iCustID As Integer, sCustName As String)
         Console.WriteLine("Loading Quotes")
@@ -268,7 +269,7 @@
         'See here for email handling "https://www.emoreau.com/Entries/Articles/2016/04/Drag--Drop-emails-on-a-Net-application-from-Outlook-with-attachments.aspx"
         Dim files() As String = e.Data.GetData(DataFormats.FileDrop)
         For Each path In files
-            MsgBox(path)
+            'MsgBox(path)
         Next
     End Sub
 
@@ -289,9 +290,13 @@
     Private Sub tbCust_TextChanged(sender As Object, e As EventArgs) Handles tbCust.TextChanged
         filterString = tbCust.Text
         lbCustSelect.Visible = filterString.Length > 0
+
+        'SEE STACK EXCHANGE QUESTION FOR WHERE THIS CODE CAME FROM
         If filterString.Length > 0 Then querytimer.Change(keyPressDelay, -1)
     End Sub
     Private Sub tbCust_TextChanged_(sender As Object, e As EventArgs)
+        '++++ THIS DOESN'T DO ANYTHING IN V4.1.1 ++++
+
         'This populated the Customer Selection list box with customers whose names start with the
         'string of letters in the customer name text box.
 
